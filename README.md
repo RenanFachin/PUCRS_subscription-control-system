@@ -38,42 +38,65 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 
 ## Atributos
 
-### Aplicativo
-| Atributo | Descrição                                         | Tipo   |
-|----------|---------------------------------------------------|--------|
-| codigo   | Código identificador do aplicativo                | Int  |
-| nome     | Nome fantasia pelo qual o aplicativo é conhecido | String  |
-| custoMensal     | Valor da assinatura mensal | Float  |
+## Atributos
 
+### Aplicativo
+| Atributo       | Descrição                                           | Tipo    |
+|----------------|-----------------------------------------------------|---------|
+| codigo         | Código identificador do aplicativo                  | Int     |
+| nome           | Nome fantasia pelo qual o aplicativo é conhecido    | String  |
+| custoMensal    | Valor da assinatura mensal                          | Float   |
 
 ### Cliente
-| Atributo | Descrição                                         | Tipo   |
-|----------|---------------------------------------------------|--------|
-| codigo   | Código identificador do cliente                | Int  |
-| nome     | Nome do cliente | String  |
-| email     | E-mail do cliente | String  |
-
+| Atributo       | Descrição                                           | Tipo    |
+|----------------|-----------------------------------------------------|---------|
+| codigo         | Código identificador do cliente                     | Int     |
+| nome           | Nome do cliente                                     | String  |
+| email          | E-mail do cliente                                   | String  |
 
 ### Assinatura
-| Atributo | Descrição                                         | Tipo   |
-|----------|---------------------------------------------------|--------|
-| codigo   | Código identificador da assinatura                | Int  |
-| codApp     | Código do aplicativo assinado | Int  |
-| codCli     | Código do cliente | Int  |
-| inicioVigencia     | Início da vigência da assinatura | Date  |
-| fimVigencia     | Fim da vigência da assinatura | Date  |
-
+| Atributo          | Descrição                                        | Tipo    |
+|-------------------|--------------------------------------------------|---------|
+| codigo            | Código identificador da assinatura               | Int     |
+| codApp            | Código do aplicativo assinado                    | Int     |
+| codCli            | Código do cliente                                | Int     |
+| inicioVigencia    | Início da vigência da assinatura                 | Date    |
+| fimVigencia       | Fim da vigência da assinatura                    | Date    |
 
 ### Pagamento
-| Atributo | Descrição                                         | Tipo   |
-|----------|---------------------------------------------------|--------|
-| codigo   | Identificador único do pagamento                | Int  |
-| codAssinatura     | Código da assinatura paga | Int  |
-| valorPago     | Valor pago | Float  |
-| dataPagamento     | Data em que o pagamento foi efetivado | Date  |
+| Atributo       | Descrição                                           | Tipo    |
+|----------------|-----------------------------------------------------|---------|
+| codigo         | Identificador único do pagamento                    | Int     |
+| codAssinatura  | Código da assinatura paga                           | Int     |
+| valorPago      | Valor pago                                          | Float   |
+| dataPagamento  | Data em que o pagamento foi efetivado               | Date    |
 
 ### Usuário
-| Atributo | Descrição                                         | Tipo   |
-|----------|---------------------------------------------------|--------|
-| usuario   | Identificador do usuário para login                | String  |
-| senha     | Senha de acesso do usuário | String  |
+| Atributo    | Descrição                                              | Tipo    |
+|-------------|--------------------------------------------------------|---------|
+| usuario     | Identificador do usuário para login                    | String  |
+| senha       | Senha de acesso do usuário                             | String  |
+
+
+## Instalação
+
+
+```bash
+# Faça o clone do repositório
+  git clone https://github.com/RenanFachin/PUCRS_subscription-control-system.git
+
+# Instale as depêndencias
+  npm i
+
+# Rodando containers para criação do db
+  docker compose up
+
+# Executando o projeto no ambiente de desenvolvimento
+  npm run start:dev
+```
+
+### 📘 Ferramentas/Bibliotecas utilizadas
+- Back-end
+  - `Typescript`
+  - `NestJS`
+  - `Docker`
