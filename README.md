@@ -41,31 +41,31 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 ### Aplicativo
 | Atributo       | Descrição                                           | Tipo    |
 |----------------|-----------------------------------------------------|---------|
-| codigo         | Código identificador do aplicativo                  | Int     |
+| codigo         | Código identificador do aplicativo                  | UUID     |
 | nome           | Nome fantasia pelo qual o aplicativo é conhecido    | String  |
 | custoMensal    | Valor da assinatura mensal                          | Float   |
 
 ### Cliente
 | Atributo       | Descrição                                           | Tipo    |
 |----------------|-----------------------------------------------------|---------|
-| codigo         | Código identificador do cliente                     | Int     |
+| codigo         | Código identificador do cliente                     | UUID     |
 | nome           | Nome do cliente                                     | String  |
 | email          | E-mail do cliente                                   | String  |
 
 ### Assinatura
 | Atributo          | Descrição                                        | Tipo    |
 |-------------------|--------------------------------------------------|---------|
-| codigo            | Código identificador da assinatura               | Int     |
-| codApp            | Código do aplicativo assinado                    | Int     |
-| codCli            | Código do cliente                                | Int     |
+| codigo            | Código identificador da assinatura               | UUID     |
+| codApp            | Código do aplicativo assinado                    | UUID     |
+| codCli            | Código do cliente                                | UUID     |
 | inicioVigencia    | Início da vigência da assinatura                 | Date    |
 | fimVigencia       | Fim da vigência da assinatura                    | Date    |
 
 ### Pagamento
 | Atributo       | Descrição                                           | Tipo    |
 |----------------|-----------------------------------------------------|---------|
-| codigo         | Identificador único do pagamento                    | Int     |
-| codAssinatura  | Código da assinatura paga                           | Int     |
+| codigo         | Identificador único do pagamento                    | UUID     |
+| codAssinatura  | Código da assinatura paga                           | UUID     |
 | valorPago      | Valor pago                                          | Float   |
 | dataPagamento  | Data em que o pagamento foi efetivado               | Date    |
 
@@ -76,21 +76,41 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 | senha       | Senha de acesso do usuário                             | String  |
 
 
-## Instalação
-
+## Executando o projeto
+Realizar o clone da aplicação
 
 ```bash
-# Faça o clone do repositório
-  git clone https://github.com/RenanFachin/PUCRS_subscription-control-system.git
+git clone https://github.com/RenanFachin/PUCRS_subscription-control-system.git
+```
 
-# Instale as depêndencias
-  npm i
+Instalar dependências
+```bash
+npm i
+```
 
-# Rodando containers para criação do db
-  docker compose up -d
+Subir o banco de dados PostgreSQL via docker
+```bash
+docker compose up -d
+```
 
-# Executando o projeto no ambiente de desenvolvimento
-  npm run start:dev
+Copiar o arquivo com os dados de conexão e demais variáveis ambiente
+```bash
+cp .env.example .env
+```
+
+Criar as tabelas do banco de dados (em desenvolvimento)
+```bash
+npx prisma migrate dev
+```
+
+Execute o projeto
+```bash
+npm run start:dev
+```
+
+Visualizando o banco de dados
+```bash
+npx prisma studio
 ```
 
 ### 📘 Ferramentas/Bibliotecas utilizadas
@@ -98,3 +118,4 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
   - `Typescript`
   - `NestJS`
   - `Docker`
+  - `Prisma ORM`
