@@ -87,7 +87,7 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
   npm i
 
 # Rodando containers para criação do db
-  docker compose up
+  docker compose up -d
 
 # Executando o projeto no ambiente de desenvolvimento
   npm run start:dev
