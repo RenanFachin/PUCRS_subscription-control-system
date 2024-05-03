@@ -37,7 +37,6 @@ Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que j
 A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assinatura`,`Pagamento`,`Usuário`
 
 ## Atributos
-
 ### Aplicativo
 | Atributo       | Descrição                                           | Tipo    |
 |----------------|-----------------------------------------------------|---------|
@@ -75,6 +74,13 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 | usuario     | Identificador do usuário para login                    | String  |
 | senha       | Senha de acesso do usuário                             | String  |
 
+
+## Diagrama UML (FASE 1)
+
+<div align="center" >
+  <img alt="Logo NLW" title="NLW" src=".github/Diagrama-uml.PNG" width="800">
+</div>
+<br>
 
 ## Executando o projeto
 Realizar o clone da aplicação
