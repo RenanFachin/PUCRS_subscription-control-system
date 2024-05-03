@@ -38,8 +38,6 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 
 ## Atributos
 
-## Atributos
-
 ### Aplicativo
 | Atributo       | Descrição                                           | Tipo    |
 |----------------|-----------------------------------------------------|---------|
