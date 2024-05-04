@@ -9,8 +9,8 @@ datasource db {
 
 model Aplicativo {
   codigo      String       @id @default(uuid())
-  nome        String
-  custoMensal Float @map("custo_mensal")
+  nome        String       @unique
+  custoMensal Float        @map("custo_mensal")
   assinaturas Assinatura[]
 
   @@map("aplicativos")

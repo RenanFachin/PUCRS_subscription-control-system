@@ -9,7 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
 
 const registerClientBodySchema = z.object({
-  name: z.string(),
+  nome: z.string(),
   email: z.string().email(),
 })
 
@@ -17,12 +17,12 @@ type RegisterClientBodySchema = z.infer<typeof registerClientBodySchema>
 
 @Controller('/servcad/clientes')
 export class RegisterClientController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   @Post()
   @HttpCode(201)
   async handle(@Body() body: RegisterClientBodySchema) {
-    const { name, email } = registerClientBodySchema.parse(body)
+    const { nome, email } = registerClientBodySchema.parse(body)
 
     const clientWithSameEmail = await this.prisma.cliente.findUnique({
       where: {
@@ -32,13 +32,13 @@ export class RegisterClientController {
 
     if (clientWithSameEmail) {
       throw new ConflictException(
-        'Client with same e-mail address already registered',
+        'Cliente já cadastrado em nosso sistema.',
       )
     }
 
     await this.prisma.cliente.create({
       data: {
-        nome: name,
+        nome,
         email,
       },
     })
