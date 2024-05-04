@@ -1,7 +1,13 @@
-import { BadRequestException, Body, Controller, HttpCode, NotFoundException, Post } from '@nestjs/common'
+import { BadRequestException, Body, Controller, NotFoundException, Post } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { createsSubscriptionValidity } from 'src/utils/creates-subscription-validity'
 import { z } from 'zod'
+import {
+  ApiBody,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { RegisterSubscriptionDTO } from 'src/dtos/register-subscription-dto';
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),
@@ -11,11 +17,15 @@ const registerSubscriptionBodySchema = z.object({
 type RegisterSubscriptionBodySchema = z.infer<typeof registerSubscriptionBodySchema>
 
 @Controller('/servcad/assinaturas')
+@ApiTags('Assinaturas')
 export class RegisterSubscriptionController {
   constructor(private prisma: PrismaService) { }
 
+  @ApiBody({
+    type: RegisterSubscriptionDTO
+  })
   @Post()
-  @HttpCode(201)
+  @ApiOperation({ summary: 'Cria uma assinatura válida.' })
   async handle(@Body() body: RegisterSubscriptionBodySchema) {
     const { codApp, codCli } = registerSubscriptionBodySchema.parse(body)
 

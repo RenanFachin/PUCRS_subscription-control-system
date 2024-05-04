@@ -2,9 +2,14 @@ import {
   Body,
   ConflictException,
   Controller,
-  HttpCode,
   Post,
 } from '@nestjs/common'
+import {
+  ApiBody,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { RegisterClienteDTO } from 'src/dtos/register-client-dto';
 import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
 
@@ -16,11 +21,15 @@ const registerClientBodySchema = z.object({
 type RegisterClientBodySchema = z.infer<typeof registerClientBodySchema>
 
 @Controller('/servcad/clientes')
+@ApiTags('Cliente')
 export class RegisterClientController {
   constructor(private prisma: PrismaService) { }
 
+  @ApiBody({
+    type: RegisterClienteDTO
+  })
   @Post()
-  @HttpCode(201)
+  @ApiOperation({ summary: 'Cria um cliente.' })
   async handle(@Body() body: RegisterClientBodySchema) {
     const { nome, email } = registerClientBodySchema.parse(body)
 

@@ -119,6 +119,11 @@ Visualizando o banco de dados
 npx prisma studio
 ```
 
+Visualizando a documentação do projeto
+```bash
+http://localhost:3333/docs
+```
+
 ### 📘 Ferramentas/Bibliotecas utilizadas
 - Back-end
   - `Typescript`

@@ -2,11 +2,16 @@ import {
   Body,
   ConflictException,
   Controller,
-  HttpCode,
   Post,
 } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
+import {
+  ApiBody,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { RegisterApplicationDTO } from 'src/dtos/register-application-dto';
 
 const registerApplicationBodySchema = z.object({
   nome: z.string(),
@@ -18,11 +23,15 @@ type RegisterApllicationBodySchema = z.infer<
 >
 
 @Controller('/servcad/aplicativos')
+@ApiTags('Aplicativos')
 export class RegisterApllicationController {
   constructor(private prisma: PrismaService) { }
 
+  @ApiBody({
+    type: RegisterApplicationDTO
+  })
   @Post()
-  @HttpCode(201)
+  @ApiOperation({ summary: 'Cria um aplicativo.' })
   async handle(@Body() body: RegisterApllicationBodySchema) {
     const { nome, custoMensal } = registerApplicationBodySchema.parse(body)
 
