@@ -15,9 +15,9 @@ const registerClientBodySchema = z.object({
 
 type RegisterClientBodySchema = z.infer<typeof registerClientBodySchema>
 
-@Controller('/client')
+@Controller('/servcad/clientes')
 export class RegisterClientController {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   @Post()
   @HttpCode(201)
