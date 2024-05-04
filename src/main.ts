@@ -1,12 +1,18 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { Env } from './env';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     // logger: false,
   })
+
+  const configService: ConfigService<Env, true> = app.get(ConfigService)
+  const port = configService.get('PORT', { infer: true })
+
 
   const config = new DocumentBuilder()
     .setTitle('Subscription Control System')
@@ -23,6 +29,6 @@ async function bootstrap() {
     swaggerOptions: { defaultModelsExpandDepth: -1 },
   });
 
-  await app.listen(3333)
+  await app.listen(port)
 }
 bootstrap()
