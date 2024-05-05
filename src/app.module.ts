@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config'
 import { envSchema } from './env'
 import { ListAllClientsController } from './controllers/list-all-clients.controller'
 import { ListAllAppsController } from './controllers/list-all-apps.controller'
+import { ListAllCurrentSubscriptionsController } from './controllers/list-all-current-subscriptions.controller'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ListAllAppsController } from './controllers/list-all-apps.controller'
     RegisterSubscriptionController,
     ListAllClientsController,
     ListAllAppsController,
+    ListAllCurrentSubscriptionsController,
   ],
   providers: [PrismaService],
 })

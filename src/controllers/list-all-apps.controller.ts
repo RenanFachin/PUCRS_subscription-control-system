@@ -1,7 +1,8 @@
 import { Controller, Get } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
+import { listAllAppsDTO } from 'src/dtos/list-all-apps-dto'
 
 const appsResponse = z.array(
   z.object({
@@ -21,6 +22,11 @@ export class ListAllAppsController {
   @Get()
   @ApiOperation({
     summary: 'Retorna uma lista de todos os aplicativos cadastrados.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Sucesso',
+    type: [listAllAppsDTO],
   })
   async handle(): Promise<AppsResponse> {
     const apps = await this.prisma.aplicativo.findMany()
