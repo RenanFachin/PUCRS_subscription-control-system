@@ -11,6 +11,7 @@ import { ListAllCurrentSubscriptionsController } from './controllers/assinaturas
 import { ListAnEspecificClientController } from './controllers/clientes/list-an-especific-client.controller'
 import { GetApplicationDetailController } from './controllers/aplicativos/get-application-detail.controller'
 import { UpdateMonthlyCostApplicationControlller } from './controllers/aplicativos/update-monthly-cost-application.controller'
+import { GetClientSubscriptionController } from './controllers/assinaturas/get-client-subscription.controller'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UpdateMonthlyCostApplicationControlller } from './controllers/aplicativ
     ListAnEspecificClientController,
     GetApplicationDetailController,
     UpdateMonthlyCostApplicationControlller,
+    GetClientSubscriptionController,
   ],
   providers: [PrismaService],
 })
