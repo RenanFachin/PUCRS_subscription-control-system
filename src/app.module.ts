@@ -9,6 +9,7 @@ import { ListAllClientsController } from './controllers/clientes/list-all-client
 import { ListAllAppsController } from './controllers/aplicativos/list-all-apps.controller'
 import { ListAllCurrentSubscriptionsController } from './controllers/assinaturas/list-all-current-subscriptions.controller'
 import { ListAnEspecificClientController } from './controllers/clientes/list-an-especific-client.controller'
+import { GetApplicationDetailController } from './controllers/aplicativos/get-applicatrion-detail.controller'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ListAnEspecificClientController } from './controllers/clientes/list-an-
     ListAllAppsController,
     ListAllCurrentSubscriptionsController,
     ListAnEspecificClientController,
+    GetApplicationDetailController,
   ],
   providers: [PrismaService],
 })
