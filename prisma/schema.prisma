@@ -28,7 +28,7 @@ model Cliente {
 model Assinatura {
   codigo         String    @id @default(uuid())
   inicioVigencia DateTime  @default(now()) @map("inicio_vigencia")
-  fimVigencia    DateTime? @map("fim_vigencia")
+  fimVigencia    DateTime @map("fim_vigencia")
 
   aplicativo Aplicativo @relation(fields: [codApp], references: [codigo])
   cliente    Cliente    @relation(fields: [codCli], references: [codigo])
