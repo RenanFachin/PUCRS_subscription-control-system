@@ -5,6 +5,7 @@ import { RegisterApllicationController } from './controllers/register-applicatio
 import { RegisterSubscriptionController } from './controllers/register-subscription.controller'
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env'
+import { ListAllClientsController } from './controllers/list-all-clients.controller'
 
 
 @Module({
@@ -12,7 +13,12 @@ import { envSchema } from './env'
     validate: (env) => envSchema.parse(env),
     isGlobal: true
   })],
-  controllers: [RegisterClientController, RegisterApllicationController, RegisterSubscriptionController],
+  controllers: [
+    RegisterClientController,
+    RegisterApllicationController,
+    RegisterSubscriptionController,
+    ListAllClientsController
+  ],
   providers: [PrismaService],
 })
 export class AppModule { }
