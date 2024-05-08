@@ -5,7 +5,7 @@ import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @Controller('/servcad/aplicativos/:id')
 @ApiTags('Aplicativos')
-export class GetApplicationDetailController {
+export class GetApplicationDetailByIdController {
   constructor(private prisma: PrismaService) {}
 
   @Get()

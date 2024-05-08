@@ -8,8 +8,8 @@ import { envSchema } from './env'
 import { ListAllClientsController } from './controllers/clientes/list-all-clients.controller'
 import { ListAllAppsController } from './controllers/aplicativos/list-all-apps.controller'
 import { ListAllCurrentSubscriptionsController } from './controllers/assinaturas/list-all-current-subscriptions.controller'
-import { ListAnEspecificClientController } from './controllers/clientes/list-an-especific-client.controller'
-import { GetApplicationDetailController } from './controllers/aplicativos/get-application-detail.controller'
+import { getClientByIdController } from './controllers/clientes/get-client-by-id.controller'
+import { GetApplicationDetailByIdController } from './controllers/aplicativos/get-application-detail.controller'
 import { UpdateMonthlyCostApplicationControlller } from './controllers/aplicativos/update-monthly-cost-application.controller'
 import { GetClientSubscriptionController } from './controllers/assinaturas/get-client-subscription.controller'
 import { GetApplicationSubscriptionController } from './controllers/assinaturas/get-application-subscription.controller'
@@ -28,8 +28,8 @@ import { GetApplicationSubscriptionController } from './controllers/assinaturas/
     ListAllClientsController,
     ListAllAppsController,
     ListAllCurrentSubscriptionsController,
-    ListAnEspecificClientController,
-    GetApplicationDetailController,
+    getClientByIdController,
+    GetApplicationDetailByIdController,
     UpdateMonthlyCostApplicationControlller,
     GetClientSubscriptionController,
     GetApplicationSubscriptionController,

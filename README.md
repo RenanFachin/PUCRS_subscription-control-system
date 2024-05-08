@@ -4,26 +4,31 @@ Considerando mundo de hoje, o problema propõem a criação de uma aplicação q
 Com isto, é necessário um sistema para manter o controle das assinaturas, este sistema deve ser capaz de, periodicamente, verificar se a assinatura continua válida.
 Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que juntamente com o código de identificação do cliente, fazem a liberação do aplicativo.
 
+## Arquitetura
+
+<div align="center" >
+  <img alt="Diagrama do Clean Arch" title="Clean arch" src=".github/clean-arch.PNG" width="800">
+</div>
+<br>
+
 ## Requisitos
 
 ### Requisitos funcionais
 
 #### ServicoCadastramento
-- [ ] Deve ser possível gerar uma lista com todos os clientes cadastrados;
-- [ ] Deve ser possível gerar uma lista com todos os aplicativos cadatrados;
-- [ ] Deve ser possível criar uma assinatura;
-- [ ] Deve ser possível realizar uma atualização no custo mensal dos aplicativos;
-- [ ] Deve ser possível retornar uma lista com todos as assinaturas vigentes;
-- [ ] O cliente deve ser capaz de retornar uma lista com as suas assinaturas;
-- [ ] Deve ser possível retornar uma lista de assinaturas por aplicativos;
+- [x] Deve ser possível gerar uma lista com todos os clientes cadastrados;
+- [x] Deve ser possível gerar uma lista com todos os aplicativos cadatrados;
+- [x] Deve ser possível criar uma assinatura;
+- [x] Deve ser possível realizar uma atualização no custo mensal dos aplicativos;
+- [x] Deve ser possível retornar uma lista com todos as assinaturas vigentes;
+- [x] O cliente deve ser capaz de retornar uma lista com as suas assinaturas;
+- [x] Deve ser possível retornar uma lista de assinaturas por aplicativos;
 
 #### ServicoPagamentos
 - [ ] Deve ser possível solicitar o registro de um pagamento;
 
 #### ServicoAssinaturasValidas
 - [ ] Deve ser possível retornar a validade de uma assinatura específica
-
-
 
 ### Requisitos não-funcionais
 
@@ -78,7 +83,7 @@ A aplicação deve conter as seguintes entidades: `Aplicativo`,`Cliente`,`Assina
 ## Diagrama UML (FASE 1)
 
 <div align="center" >
-  <img alt="Logo NLW" title="NLW" src=".github/Diagrama-uml.PNG" width="800">
+  <img alt="Diagrama UML" title="Diagrama UML" src=".github/Diagrama-uml.PNG" width="800">
 </div>
 <br>
 

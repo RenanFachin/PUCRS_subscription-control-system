@@ -1,0 +1,30 @@
+import { InMemoryAplicativoRepository } from 'test/repositories/in-memory-aplicativo-repository'
+import { GetApplicationDetailByIdCase } from './get-application-detail-by-id'
+import { makeApplication } from 'test/factories/make-application'
+
+let inMemoryAplicativoRepository: InMemoryAplicativoRepository
+let sut: GetApplicationDetailByIdCase
+
+describe('Get an app details by id', () => {
+  beforeEach(() => {
+    inMemoryAplicativoRepository = new InMemoryAplicativoRepository()
+    sut = new GetApplicationDetailByIdCase(inMemoryAplicativoRepository)
+  })
+
+  it('should be able to get an app details by id', async () => {
+    const newApp = makeApplication({
+      nome: 'GloboPlay',
+    })
+
+    console.log(newApp)
+
+    inMemoryAplicativoRepository.register(newApp)
+
+    const { aplicativo } = await sut.execute({
+      codigo: newApp.codigo,
+    })
+
+    // console.log(cliente)
+    expect(aplicativo.nome).toEqual('GloboPlay')
+  })
+})
