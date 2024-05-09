@@ -18,4 +18,8 @@ export class InMemoryClienteRepository implements ClienteRepository {
 
     return cliente
   }
+
+  async findAll() {
+    return this.clientes
+  }
 }

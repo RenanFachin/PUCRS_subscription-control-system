@@ -20,4 +20,8 @@ export class InMemoryAplicativoRepository implements AplicativoRepository {
 
     return aplicativo
   }
+
+  async findAll() {
+    return this.aplicativos
+  }
 }

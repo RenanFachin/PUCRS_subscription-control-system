@@ -16,7 +16,7 @@ describe('Get an app details by id', () => {
       nome: 'GloboPlay',
     })
 
-    console.log(newApp)
+    // console.log(newApp)
 
     inMemoryAplicativoRepository.register(newApp)
 
@@ -25,6 +25,9 @@ describe('Get an app details by id', () => {
     })
 
     // console.log(cliente)
-    expect(aplicativo.nome).toEqual('GloboPlay')
+
+    expect(aplicativo.nome).toEqual('GloboPlay') // Espero que o nome do aplicativo seja Globoplay
+    expect(aplicativo.custoMensal).toBeGreaterThan(5) // Espero que seja maior que 5
+    expect(inMemoryAplicativoRepository.aplicativos).length(1) // Espero que o tamanho do array de aplicativos seja 1
   })
 })

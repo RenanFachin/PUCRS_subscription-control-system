@@ -32,6 +32,33 @@ export class Assinatura extends Entity<AssinaturaProps> {
     return dayjs().isAfter(this.fimVigencia, 'day')
   }
 
+  getStatus(tipo: 'TODAS' | 'ATIVAS' | 'CANCELADAS'): 'ativa' | 'cancelada' {
+    if (tipo === 'TODAS') {
+      // Retorna o status baseado na vigência da assinatura
+      if (dayjs().isAfter(this.props.fimVigencia)) {
+        return 'cancelada'
+      } else {
+        return 'ativa'
+      }
+    } else if (tipo === 'ATIVAS') {
+      // Retorna 'ativa' se a assinatura estiver dentro do período de vigência
+      if (dayjs().isBefore(this.props.fimVigencia)) {
+        return 'ativa'
+      } else {
+        return 'cancelada'
+      }
+    } else if (tipo === 'CANCELADAS') {
+      // Retorna 'cancelada' se a assinatura estiver fora do período de vigência
+      if (dayjs().isAfter(this.props.fimVigencia)) {
+        return 'cancelada'
+      } else {
+        return 'ativa'
+      }
+    } else {
+      throw new Error('Tipo informado não existe')
+    }
+  }
+
   // método static não precisa ser instanciado
   static create(
     props: Optional<AssinaturaProps, 'inicioVigencia' | 'fimVigencia'>,

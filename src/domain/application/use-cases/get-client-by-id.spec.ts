@@ -24,5 +24,6 @@ describe('Get a client by id', () => {
 
     // console.log(cliente)
     expect(cliente.nome).toEqual('Renan')
+    expect(inMemoryClienteRepository.clientes).length(1) // Espero que o tamanho do array de 1
   })
 })
