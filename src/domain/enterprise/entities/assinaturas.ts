@@ -3,6 +3,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Optional } from '@/core/types/optional'
 import { createsSubscriptionValidity } from '@/utils/creates-subscription-validity'
+import { AssinaturaDetails } from '@/domain/application/use-cases/get-client-subscription'
 
 export interface AssinaturaProps {
   inicioVigencia: Date
@@ -32,7 +33,7 @@ export class Assinatura extends Entity<AssinaturaProps> {
     return dayjs().isAfter(this.fimVigencia, 'day')
   }
 
-  getSubscriptionDetails() {
+  getSubscriptionDetails(): AssinaturaDetails {
     return {
       codigoAssinatura: this.codigo.toValue(),
       codigoCliente: this.props.codCli.toValue(),

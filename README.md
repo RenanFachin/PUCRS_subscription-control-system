@@ -129,6 +129,11 @@ Visualizando a documentação do projeto
 http://localhost:3333/docs
 ```
 
+Testes
+```bash
+npm run test
+```
+
 ### 📘 Ferramentas/Bibliotecas utilizadas
 - Back-end
   - `Typescript`

@@ -1,12 +1,12 @@
-import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
+import { AssinaturaDetails } from './get-client-subscription'
 
 interface ListAllSubscriptionUseCaseRequest {
   tipo: 'TODAS' | 'ATIVAS' | 'CANCELADAS'
 }
 
 interface ListAllSubscriptionUseCaseResponse {
-  assinaturas: Assinatura[]
+  assinaturas: AssinaturaDetails[]
 }
 
 export class ListAllSubscriptionUseCase {
@@ -17,19 +17,30 @@ export class ListAllSubscriptionUseCase {
   }: ListAllSubscriptionUseCaseRequest): Promise<ListAllSubscriptionUseCaseResponse> {
     const assinaturas = await this.assinaturaRepository.findAll()
 
-    if (!assinaturas) {
-      throw new Error()
+    if (!assinaturas || assinaturas.length === 0) {
+      throw new Error('Não foram encontradas assinaturas.')
     }
 
-    const filteredAssinaturas = assinaturas.filter((assinatura) => {
-      const status = assinatura.getStatus(tipo)
-      return (
-        tipo === 'TODAS' ||
-        (status === 'ativa' && tipo === 'ATIVAS') ||
-        (status === 'cancelada' && tipo === 'CANCELADAS')
-      )
-    })
+    let filteredAssinaturas = assinaturas
 
-    return { assinaturas: filteredAssinaturas }
+    if (tipo !== 'TODAS') {
+      filteredAssinaturas = assinaturas.filter((assinatura) => {
+        const status = assinatura.status === 'ativa' ? 'ATIVAS' : 'CANCELADAS'
+        return status === tipo
+      })
+    }
+
+    const assinaturasComStatus: AssinaturaDetails[] = filteredAssinaturas.map(
+      (assinatura) => ({
+        codigoAssinatura: assinatura.codigoAssinatura,
+        codigoCliente: assinatura.codigoCliente,
+        codigoAplicativo: assinatura.codigoAplicativo,
+        dataInicio: assinatura.dataInicio,
+        dataEncerramento: assinatura.dataEncerramento,
+        status: assinatura.status,
+      }),
+    )
+
+    return { assinaturas: assinaturasComStatus }
   }
 }

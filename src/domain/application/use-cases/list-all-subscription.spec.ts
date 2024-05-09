@@ -44,12 +44,7 @@ describe('Get all subscriptions', () => {
     const segundaAssinatura = makeSubscription(
       segundoAplicativo.codigo,
       segundoCliente.codigo,
-      {
-        inicioVigencia: new Date('2002-01-01'),
-      },
     )
-
-    // console.log(terceiraAssinatura)
 
     await inMemoryAssinaturaRepository.register(primeiraAssinatura)
     await inMemoryAssinaturaRepository.register(segundaAssinatura)
@@ -58,12 +53,7 @@ describe('Get all subscriptions', () => {
 
     console.log(assinaturas)
 
-    assinaturas.forEach((assinatura) => {
-      const details = assinatura.getSubscriptionDetails()
-      console.log(details)
-    })
-
-    // expect(assinaturas).length(2)
-    // expect(assinaturas[1].codigo).toBeTruthy()
+    expect(assinaturas).length(2)
+    expect(assinaturas[1].codigoAplicativo).toBeTruthy()
   })
 })
