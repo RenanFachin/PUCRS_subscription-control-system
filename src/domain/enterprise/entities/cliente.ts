@@ -1,6 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Optional } from '@/core/types/optional'
+import { validateEmail } from '@/utils/validate-email-regex'
 
 export interface ClientProps {
   nome: string
@@ -36,6 +37,16 @@ export class Cliente extends Entity<ClientProps> {
   }
 
   set email(email: string) {
+    // Se o usuário tentar passar o mesmo email já registrado
+    if (this.email === email) {
+      throw new Error('Este email já está em uso')
+    }
+
+    // Verificando se o usuário está passando um email válido, utilizando expressão regular para validar
+    if (!validateEmail(email)) {
+      throw new Error('Email inválido')
+    }
+
     this.props.email = email
     this.touch()
   }

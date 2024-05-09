@@ -22,4 +22,12 @@ export class InMemoryClienteRepository implements ClienteRepository {
   async findAll() {
     return this.clientes
   }
+
+  async edit(editedClient: Cliente) {
+    const clientIndex = this.clientes.findIndex(
+      (cliente) => cliente.codigo === editedClient.codigo,
+    )
+
+    this.clientes[clientIndex] = editedClient
+  }
 }
