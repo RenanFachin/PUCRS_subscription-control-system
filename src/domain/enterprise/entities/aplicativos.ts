@@ -32,11 +32,6 @@ export class Aplicativo extends Entity<AplicativoProps> {
     this.props.updatedAt = new Date()
   }
 
-  set nome(nome: string) {
-    this.props.nome = nome
-    this.touch()
-  }
-
   set custoMensal(custoMensal: number) {
     this.props.custoMensal = custoMensal
     this.touch()

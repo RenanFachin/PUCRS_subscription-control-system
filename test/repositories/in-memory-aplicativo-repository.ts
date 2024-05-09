@@ -24,4 +24,12 @@ export class InMemoryAplicativoRepository implements AplicativoRepository {
   async findAll() {
     return this.aplicativos
   }
+
+  async edit(editedApp: Aplicativo) {
+    const appIndex = this.aplicativos.findIndex(
+      (app) => app.codigo === editedApp.codigo,
+    )
+
+    this.aplicativos[appIndex] = editedApp
+  }
 }
