@@ -4,7 +4,7 @@ import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Optional } from '@/core/types/optional'
 import { createsSubscriptionValidity } from '@/utils/creates-subscription-validity'
 
-interface AssinaturaProps {
+export interface AssinaturaProps {
   inicioVigencia: Date
   fimVigencia: Date
   codApp: UniqueEntityCodigo
@@ -30,6 +30,17 @@ export class Assinatura extends Entity<AssinaturaProps> {
 
   get isSubscriptionExpired(): boolean {
     return dayjs().isAfter(this.fimVigencia, 'day')
+  }
+
+  getSubscriptionDetails() {
+    return {
+      codigoAssinatura: this.codigo.toValue(),
+      codigoCliente: this.props.codCli.toValue(),
+      codigoAplicativo: this.props.codApp.toValue(),
+      dataInicio: this.props.inicioVigencia,
+      dataEncerramento: this.props.fimVigencia,
+      status: this.getStatus('TODAS') === 'ativa' ? 'ATIVA' : 'CANCELADA',
+    }
   }
 
   getStatus(tipo: 'TODAS' | 'ATIVAS' | 'CANCELADAS'): 'ativa' | 'cancelada' {

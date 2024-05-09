@@ -1,5 +1,4 @@
 import { RegisterSubscriptionUseCase } from './register-subscription'
-import { createsSubscriptionValidity } from '@/utils/creates-subscription-validity'
 import { makeApplication } from 'test/factories/make-application'
 import { makeClient } from 'test/factories/make-client'
 import { InMemoryAssinaturaRepository } from 'test/repositories/in-memory-assinatura-repository'
@@ -19,8 +18,6 @@ describe('Create a Subscription', () => {
     const aplicativo = makeApplication()
 
     const { assinatura } = await sut.execute({
-      inicioVigencia: new Date(),
-      fimVigencia: createsSubscriptionValidity(),
       codApp: aplicativo.codigo,
       codCli: cliente.codigo,
     })

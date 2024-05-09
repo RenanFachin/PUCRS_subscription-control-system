@@ -3,8 +3,6 @@ import { AssinaturaRepository } from '../repositories/assinatura-repository'
 import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 
 interface RegisterSubscriptionUseCaseRequest {
-  inicioVigencia: Date
-  fimVigencia: Date
   codApp: UniqueEntityCodigo
   codCli: UniqueEntityCodigo
 }

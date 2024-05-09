@@ -7,4 +7,8 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
   async register(assinatura: Assinatura) {
     this.assinaturas.push(assinatura)
   }
+
+  async findAll() {
+    return this.assinaturas
+  }
 }
