@@ -1,11 +1,12 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
+import { GetClientByIdUseCase } from '@/domain/application/use-cases/get-client-by-id'
+import { ClientPresenter } from '../../presenters/client-presenter'
 @Controller('/servcad/client/:id')
 @ApiTags('Cliente')
 export class GetClientByIdController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private getClientByIdUseCase: GetClientByIdUseCase) {}
 
   @Get()
   @ApiOperation({
@@ -18,19 +19,17 @@ export class GetClientByIdController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Usuário não encontrado',
+    description: 'Cliente não encontrado',
   })
-  async handle(@Param('id') id: string): Promise<listAllClientsDTO> {
-    const cliente = await this.prisma.cliente.findUnique({
-      where: {
-        codigo: id,
-      },
-    })
+  async handle(@Param('id') id: string) {
+    const result = await this.getClientByIdUseCase.execute({ codigo: id })
 
-    if (!cliente) {
-      throw new BadRequestException('Usuário não encontrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    return cliente
+    const cliente = result.value.cliente
+
+    return { cliente: ClientPresenter.toHTTP(cliente) }
   }
 }

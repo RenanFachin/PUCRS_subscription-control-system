@@ -1,14 +1,21 @@
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { ClienteRepository } from '../repositories/cliente-repository'
+import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
+import { ClientNotFoundError } from '@/core/errors/errors/client-not-found-error'
 
 interface GetClientByIdUseCaseRequest {
   codigo: string
 }
 
-interface GetClientByIdUseCaseResponse {
-  cliente: Cliente
-}
+type GetClientByIdUseCaseResponse = Either<
+  ClientNotFoundError,
+  {
+    cliente: Cliente
+  }
+>
 
+@Injectable()
 export class GetClientByIdUseCase {
   constructor(private clienteRepository: ClienteRepository) {}
 
@@ -18,9 +25,9 @@ export class GetClientByIdUseCase {
     const cliente = await this.clienteRepository.findById(codigo)
 
     if (!cliente) {
-      throw new Error('Cliente não econtrado')
+      return left(new ClientNotFoundError())
     }
 
-    return { cliente }
+    return right({ cliente })
   }
 }

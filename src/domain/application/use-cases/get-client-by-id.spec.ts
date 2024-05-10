@@ -18,12 +18,12 @@ describe('Get a client by id', () => {
 
     inMemoryClienteRepository.register(novoCliente)
 
-    const { cliente } = await sut.execute({
+    const cliente = await sut.execute({
       codigo: novoCliente.codigo.toString(),
     })
 
     // console.log(cliente)
-    expect(cliente.nome).toEqual('Renan')
+    expect(cliente.value?.cliente.nome).toEqual('Renan')
     expect(inMemoryClienteRepository.clientes).length(1) // Espero que o tamanho do array de 1
   })
 })
