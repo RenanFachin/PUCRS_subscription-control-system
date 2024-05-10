@@ -1,5 +1,5 @@
 import { ClienteRepository } from '@/domain/application/repositories/cliente-repository'
-import { Injectable } from '@nestjs/common'
+import { ConflictException, Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { PrismaClienteMapper } from '../mappers/prisma-cliente-mapper'
@@ -8,12 +8,26 @@ import { PrismaClienteMapper } from '../mappers/prisma-cliente-mapper'
 export class PrismaClienteRepository implements ClienteRepository {
   constructor(private prisma: PrismaService) {}
 
-  async register(cliente: Cliente): Promise<void> {
+  async register(cliente: Cliente): Promise<Cliente> {
     const data = PrismaClienteMapper.toPrisma(cliente)
 
-    await this.prisma.cliente.create({
+    // Verificando se o email cadastrado já está no cadastrado no banco de dados
+    const clientWithSameEmail = await this.prisma.cliente.findUnique({
+      where: {
+        email: cliente.email,
+      },
+    })
+
+    if (clientWithSameEmail) {
+      throw new ConflictException('Cliente já cadastrado em nosso sistema.')
+    }
+
+    // Caso esteja tudo correto com os dados de entrada, validar a criação
+    const registeredCliente = await this.prisma.cliente.create({
       data,
     })
+
+    return PrismaClienteMapper.toDomain(registeredCliente)
   }
 
   async findById(id: string): Promise<Cliente | null> {

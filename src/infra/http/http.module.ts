@@ -12,6 +12,7 @@ import { GetClientByIdController } from './controllers/clientes/get-client-by-id
 import { ListAllClientsController } from './controllers/clientes/list-all-clients.controller'
 import { RegisterClientController } from './controllers/clientes/register-client.controller'
 import { DatabaseModule } from '../database/database.module'
+import { RegisterClientUseCase } from '@/domain/application/use-cases/register-client'
 
 @Module({
   imports: [DatabaseModule],
@@ -29,5 +30,6 @@ import { DatabaseModule } from '../database/database.module'
     GetApplicationSubscriptionController,
     EditClientController,
   ],
+  providers: [RegisterClientUseCase],
 })
 export class HttpModule {}
