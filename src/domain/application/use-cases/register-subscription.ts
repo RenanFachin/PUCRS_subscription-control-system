@@ -22,7 +22,6 @@ export class RegisterSubscriptionUseCase {
       codApp,
       codCli,
     })
-
     await this.assinaturaRepository.register(assinatura)
 
     return { assinatura }
