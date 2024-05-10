@@ -8,6 +8,7 @@ export interface ClientProps {
   email: string
   createdAt: Date
   updatedAt?: Date | null
+  // assinaturas: Assinatura[]
 }
 
 export class Cliente extends Entity<ClientProps> {

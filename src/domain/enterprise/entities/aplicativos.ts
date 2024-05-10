@@ -7,6 +7,7 @@ export interface AplicativoProps {
   custoMensal: number
   createdAt: Date
   updatedAt?: Date | null
+  // assinaturas: Assinatura[]
 }
 
 export class Aplicativo extends Entity<AplicativoProps> {
