@@ -5,5 +5,6 @@ import { AssinaturaDetails } from '../use-cases/get-client-subscription'
 export interface AssinaturaRepository {
   register(assinatura: Assinatura): Promise<void>
   findAll(): Promise<AssinaturaDetails[] | null>
-  listByClient(codigoCliente: UniqueEntityCodigo): Promise<AssinaturaDetails[]>
+  listByClient(id: UniqueEntityCodigo): Promise<AssinaturaDetails[]>
+  listByApp(id: UniqueEntityCodigo): Promise<AssinaturaDetails[]>
 }

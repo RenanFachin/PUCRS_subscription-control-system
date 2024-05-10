@@ -51,7 +51,7 @@ describe('Get all subscriptions', () => {
 
     const { assinaturas } = await sut.execute({ tipo: 'TODAS' })
 
-    console.log(assinaturas)
+    // console.log(assinaturas)
 
     expect(assinaturas).length(2)
     expect(assinaturas[1].codigoAplicativo).toBeTruthy()

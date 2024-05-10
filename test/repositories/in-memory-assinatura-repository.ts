@@ -15,9 +15,21 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
     )
   }
 
-  async listByClient(codigoCliente: UniqueEntityCodigo) {
+  async listByClient(id: UniqueEntityCodigo) {
     const assinaturaCliente = this.assinaturas.filter(
-      (assinatura) => assinatura.codCli === codigoCliente,
+      (assinatura) => assinatura.codCli === id,
+    )
+
+    const assinaturas = assinaturaCliente.map((assinatura) =>
+      assinatura.getSubscriptionDetails(),
+    )
+
+    return assinaturas
+  }
+
+  async listByApp(id: UniqueEntityCodigo) {
+    const assinaturaCliente = this.assinaturas.filter(
+      (assinatura) => assinatura.codApp === id,
     )
 
     const assinaturas = assinaturaCliente.map((assinatura) =>
