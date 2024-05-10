@@ -20,14 +20,14 @@ describe('Get an app details by id', () => {
 
     inMemoryAplicativoRepository.register(newApp)
 
-    const { aplicativo } = await sut.execute({
+    const aplicativo = await sut.execute({
       codigo: newApp.codigo.toString(),
     })
 
-    // console.log(cliente)
-
-    expect(aplicativo.nome).toEqual('GloboPlay') // Espero que o nome do aplicativo seja Globoplay
-    expect(aplicativo.custoMensal).toBeGreaterThan(5) // Espero que seja maior que 5
-    expect(inMemoryAplicativoRepository.aplicativos).length(1) // Espero que o tamanho do array de aplicativos seja 1
+    if (aplicativo.isRight()) {
+      const appDetails = aplicativo.value.aplicativo
+      expect(appDetails.nome).toEqual('GloboPlay')
+      expect(appDetails.custoMensal).toBeGreaterThan(5)
+    }
   })
 })

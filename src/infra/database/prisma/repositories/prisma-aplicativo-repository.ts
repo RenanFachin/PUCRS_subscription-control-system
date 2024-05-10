@@ -28,8 +28,18 @@ export class PrismaAplicativoRepository implements AplicativoRepository {
     return PrismaAplicativoMapper.toDomain(newApp)
   }
 
-  findById(id: string): Promise<Aplicativo | null> {
-    throw new Error('Method not implemented.')
+  async findById(id: string): Promise<Aplicativo | null> {
+    const application = await this.prisma.aplicativo.findUnique({
+      where: {
+        codigo: id,
+      },
+    })
+
+    if (!application) {
+      return null
+    }
+
+    return PrismaAplicativoMapper.toDomain(application)
   }
 
   findAll(): Promise<Aplicativo[] | null> {

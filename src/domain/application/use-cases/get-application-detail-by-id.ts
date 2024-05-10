@@ -1,14 +1,21 @@
+import { AppNotFoundError } from '@/core/errors/errors/app-not-found-error'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
+import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 
 interface GetApplicationDetailByIdCaseRequest {
   codigo: string
 }
 
-interface GetApplicationDetailByIdCaseResponse {
-  aplicativo: Aplicativo
-}
+type GetApplicationDetailByIdCaseResponse = Either<
+  AppNotFoundError,
+  {
+    aplicativo: Aplicativo
+  }
+>
 
+@Injectable()
 export class GetApplicationDetailByIdCase {
   constructor(private aplicativoRepository: AplicativoRepository) {}
 
@@ -18,9 +25,9 @@ export class GetApplicationDetailByIdCase {
     const aplicativo = await this.aplicativoRepository.findById(codigo)
 
     if (!aplicativo) {
-      throw new Error('Aplicativo não econtrado')
+      return left(new AppNotFoundError())
     }
 
-    return { aplicativo }
+    return right({ aplicativo })
   }
 }

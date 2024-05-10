@@ -1,12 +1,15 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'
+import { GetApplicationDetailByIdCase } from '@/domain/application/use-cases/get-application-detail-by-id'
+import { AppPresenter } from '../../presenters/app-presenter'
 
 @Controller('/servcad/aplicativos/:id')
 @ApiTags('Aplicativos')
 export class GetApplicationDetailByIdController {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private getApplicationDetailByIdCase: GetApplicationDetailByIdCase,
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -21,17 +24,19 @@ export class GetApplicationDetailByIdController {
     status: 400,
     description: 'Aplicativo não encontrado.',
   })
-  async handle(@Param('id') id: string): Promise<listAllAppsDTO> {
-    const application = await this.prisma.aplicativo.findUnique({
-      where: {
-        codigo: id,
-      },
+  async handle(@Param('id') id: string) {
+    const result = await this.getApplicationDetailByIdCase.execute({
+      codigo: id,
     })
 
-    if (!application) {
-      throw new BadRequestException('Aplicativo não encontrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    return application
+    const app = result.value.aplicativo
+
+    return {
+      app: AppPresenter.toHTTP(app),
+    }
   }
 }

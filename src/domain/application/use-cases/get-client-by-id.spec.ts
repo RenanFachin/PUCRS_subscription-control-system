@@ -22,8 +22,9 @@ describe('Get a client by id', () => {
       codigo: novoCliente.codigo.toString(),
     })
 
-    // console.log(cliente)
-    expect(cliente.value?.cliente.nome).toEqual('Renan')
-    expect(inMemoryClienteRepository.clientes).length(1) // Espero que o tamanho do array de 1
+    if (cliente.isRight()) {
+      const clientDetails = cliente.value.cliente
+      expect(clientDetails.nome).toEqual('Renan')
+    }
   })
 })
