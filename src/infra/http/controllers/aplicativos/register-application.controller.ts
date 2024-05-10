@@ -1,8 +1,9 @@
 import { Body, ConflictException, Controller, Post } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { RegisterApplicationDTO } from '../../dtos/register-application-dto'
+import { CreateAppPresenter } from '../../presenters/app-presenter'
+import { RegisterApplicationUseCase } from '@/domain/application/use-cases/register-application'
 
 const registerApplicationBodySchema = z.object({
   nome: z.string(),
@@ -16,38 +17,29 @@ type RegisterApllicationBodySchema = z.infer<
 @Controller('/servcad/aplicativos')
 @ApiTags('Aplicativos')
 export class RegisterApllicationController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private registerApplicationUseCase: RegisterApplicationUseCase) {}
 
   @ApiBody({
     type: RegisterApplicationDTO,
   })
   @Post()
   @ApiOperation({ summary: 'Cria um aplicativo.' })
-  async handle(
-    @Body() body: RegisterApllicationBodySchema,
-  ): Promise<{ codApp: string }> {
+  async handle(@Body() body: RegisterApllicationBodySchema) {
     const { nome, custoMensal } = registerApplicationBodySchema.parse(body)
 
-    const isApplicationAlreadyRegistered =
-      await this.prisma.aplicativo.findUnique({
-        where: {
-          nome,
-        },
-      })
+    const result = await this.registerApplicationUseCase.execute({
+      nome,
+      custoMensal,
+    })
 
-    if (isApplicationAlreadyRegistered) {
+    if (result.isLeft()) {
       throw new ConflictException('Aplicativo já cadastrado em nosso sistema.')
     }
 
-    const appRegistered = await this.prisma.aplicativo.create({
-      data: {
-        nome,
-        custoMensal,
-      },
-    })
+    const { aplicativo } = result.value
 
     return {
-      codApp: appRegistered.codigo,
+      aplicativo: CreateAppPresenter.toHTTP(aplicativo),
     }
   }
 }

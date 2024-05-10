@@ -1,15 +1,21 @@
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
+import { Injectable } from '@nestjs/common'
+import { Either, right } from '@/core/either'
 
 interface RegisterApplicationUseCaseRequest {
   nome: string
   custoMensal: number
 }
 
-interface RegisterApplicationUseCaseResponse {
-  aplicativo: Aplicativo
-}
+type RegisterApplicationUseCaseResponse = Either<
+  null,
+  {
+    aplicativo: Aplicativo
+  }
+>
 
+@Injectable()
 export class RegisterApplicationUseCase {
   constructor(private aplicativoRepository: AplicativoRepository) {}
 
@@ -17,13 +23,13 @@ export class RegisterApplicationUseCase {
     nome,
     custoMensal,
   }: RegisterApplicationUseCaseRequest): Promise<RegisterApplicationUseCaseResponse> {
-    const aplicativo = Aplicativo.create({
+    const newApp = Aplicativo.create({
       nome,
       custoMensal,
     })
 
-    await this.aplicativoRepository.register(aplicativo)
+    const aplicativo = await this.aplicativoRepository.register(newApp)
 
-    return { aplicativo }
+    return right({ aplicativo })
   }
 }

@@ -1,6 +1,6 @@
 import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
-import { Aplicativo as PrismaAplicativo } from '@prisma/client'
+import { Prisma, Aplicativo as PrismaAplicativo } from '@prisma/client'
 
 export class PrismaAplicativoMapper {
   static toDomain(raw: PrismaAplicativo): Aplicativo {
@@ -13,5 +13,17 @@ export class PrismaAplicativoMapper {
       },
       new UniqueEntityCodigo(raw.codigo),
     )
+  }
+
+  static toPrisma(
+    aplicativo: Aplicativo,
+  ): Prisma.AplicativoUncheckedCreateInput {
+    return {
+      codigo: aplicativo.codigo.toString(),
+      nome: aplicativo.nome,
+      custoMensal: aplicativo.custoMensal,
+      createdAt: aplicativo.createdAt,
+      updatedAt: aplicativo.updatedAt,
+    }
   }
 }

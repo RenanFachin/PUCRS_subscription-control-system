@@ -1,8 +1,8 @@
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 
-export interface AplicativoRepository {
-  register(aplicativo: Aplicativo): Promise<void>
-  findById(id: string): Promise<Aplicativo | null>
-  findAll(): Promise<Aplicativo[] | null>
-  edit(aplicativo: Aplicativo): Promise<void>
+export abstract class AplicativoRepository {
+  abstract register(aplicativo: Aplicativo): Promise<Aplicativo>
+  abstract findById(id: string): Promise<Aplicativo | null>
+  abstract findAll(): Promise<Aplicativo[] | null>
+  abstract edit(aplicativo: Aplicativo): Promise<void>
 }

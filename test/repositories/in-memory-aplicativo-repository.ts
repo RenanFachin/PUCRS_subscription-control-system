@@ -6,6 +6,8 @@ export class InMemoryAplicativoRepository implements AplicativoRepository {
 
   async register(aplicativo: Aplicativo) {
     this.aplicativos.push(aplicativo)
+
+    return aplicativo
   }
 
   async findById(id: string) {

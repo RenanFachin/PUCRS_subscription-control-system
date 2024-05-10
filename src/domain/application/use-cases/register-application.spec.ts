@@ -10,16 +10,16 @@ describe('Create an Application', () => {
     sut = new RegisterApplicationUseCase(inMemoryAplicativoRepository)
   })
   it('should be able to register an app', async () => {
-    const { aplicativo } = await sut.execute({
+    const aplicativo = await sut.execute({
       nome: 'Spotify',
       custoMensal: 20,
     })
 
     // console.log(aplicativo)
 
-    expect(aplicativo.codigo).toBeTruthy()
+    expect(aplicativo.value?.aplicativo.codigo).toBeTruthy()
     expect(inMemoryAplicativoRepository.aplicativos[0].codigo).toEqual(
-      aplicativo.codigo,
+      aplicativo.value?.aplicativo.codigo,
     )
   })
 })
