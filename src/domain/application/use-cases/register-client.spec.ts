@@ -11,13 +11,15 @@ describe('Create a client', () => {
   })
 
   it('should be able to register a client', async () => {
-    const { cliente } = await sut.execute({
+    const cliente = await sut.execute({
       nome: 'John Doe',
       email: 'johndoe@email.com',
     })
 
     // console.log(cliente)
-    expect(cliente.codigo).toBeTruthy()
-    expect(inMemoryClienteRepository.clientes[0].codigo).toEqual(cliente.codigo)
+    expect(cliente.value?.cliente.codigo).toBeTruthy()
+    expect(inMemoryClienteRepository.clientes[0].codigo).toEqual(
+      cliente.value?.cliente.codigo,
+    )
   })
 })

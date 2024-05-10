@@ -59,7 +59,7 @@ describe('Get subscriptions by cliente id', () => {
       codigoAplicativo: aplicativo.codigo.toString(),
     })
 
-    console.log(assinaturas)
+    // console.log(assinaturas)
 
     expect(assinaturas.length).toBe(3)
     expect(inMemoryAssinaturaRepository.assinaturas[0].codApp).toBe(

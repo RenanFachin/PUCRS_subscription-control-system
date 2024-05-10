@@ -1,25 +1,15 @@
 import { Controller, Get } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { z } from 'zod'
 
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
-
-const clientsResponse = z.array(
-  z.object({
-    codigo: z.string().uuid(),
-    nome: z.string(),
-    email: z.string().email(),
-  }),
-)
-
-type ClientsResponse = z.infer<typeof clientsResponse>
+import { ListAllClientsUseCase } from '@/domain/application/use-cases/list-all-clients'
+import { ClientPresenter } from '../../presenters/client-presenter'
 
 @Controller('/servcad/clientes')
 @ApiTags('Cliente')
 export class ListAllClientsController {
   // eslint-disable-next-line prettier/prettier
-  constructor(private prisma: PrismaService) { }
+  constructor(private listAllClients: ListAllClientsUseCase) { }
 
   @Get()
   @ApiOperation({
@@ -30,9 +20,15 @@ export class ListAllClientsController {
     description: 'Sucesso',
     type: [listAllClientsDTO],
   })
-  async handle(): Promise<ClientsResponse> {
-    const clients = await this.prisma.cliente.findMany()
+  async handle() {
+    const result = await this.listAllClients.execute()
 
-    return clients
+    if (result.isLeft()) {
+      throw new Error()
+    }
+
+    const clientes = result.value.clientes
+
+    return { clientes: clientes.map(ClientPresenter.toHTTP) }
   }
 }

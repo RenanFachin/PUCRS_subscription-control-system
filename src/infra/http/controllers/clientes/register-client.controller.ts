@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { RegisterClienteDTO } from '../../dtos/register-client-dto'
 import { RegisterClientUseCase } from '@/domain/application/use-cases/register-client'
+import { CreateClientPresenter } from '../../presenters/client-presenter'
 
 const registerClientBodySchema = z.object({
   nome: z.string(),
@@ -24,13 +25,19 @@ export class RegisterClientController {
   async handle(@Body() body: RegisterClientBodySchema) {
     const { nome, email } = registerClientBodySchema.parse(body)
 
-    const { cliente } = await this.registerClient.execute({
+    const result = await this.registerClient.execute({
       nome,
       email,
     })
 
+    if (result.isLeft()) {
+      throw new Error()
+    }
+
+    const { cliente } = result.value
+
     return {
-      codCli: cliente.codigo.toString(),
+      cliente: CreateClientPresenter.toHTTP(cliente),
     }
   }
 }

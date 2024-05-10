@@ -1,10 +1,16 @@
-import { Cliente } from '@/domain/enterprise/entities/cliente'
+import { Injectable } from '@nestjs/common'
 import { ClienteRepository } from '../repositories/cliente-repository'
+import { Either, right } from '@/core/either'
+import { Cliente } from '@/domain/enterprise/entities/cliente'
 
-interface ListAllClientsUseCaseResponse {
-  clientes: Cliente[]
-}
+type ListAllClientsUseCaseResponse = Either<
+  null,
+  {
+    clientes: Cliente[]
+  }
+>
 
+@Injectable()
 export class ListAllClientsUseCase {
   constructor(private clienteRepository: ClienteRepository) {}
 
@@ -15,6 +21,6 @@ export class ListAllClientsUseCase {
       throw new Error()
     }
 
-    return { clientes }
+    return right({ clientes })
   }
 }

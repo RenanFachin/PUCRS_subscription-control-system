@@ -18,10 +18,8 @@ describe('Get all clients', () => {
     inMemoryClienteRepository.register(primeiroCliente)
     inMemoryClienteRepository.register(segundoCliente)
 
-    const { clientes } = await sut.execute()
+    const clientes = await sut.execute()
 
-    // console.log(clientes)
-
-    expect(clientes).length(2)
+    expect(clientes.value?.clientes).length(2)
   })
 })

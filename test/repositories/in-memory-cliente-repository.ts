@@ -6,6 +6,8 @@ export class InMemoryClienteRepository implements ClienteRepository {
 
   async register(cliente: Cliente) {
     this.clientes.push(cliente)
+
+    return cliente
   }
 
   async findById(id: string) {
