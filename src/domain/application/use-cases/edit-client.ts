@@ -1,5 +1,9 @@
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { ClienteRepository } from '../repositories/cliente-repository'
+import { Either, left, right } from '@/core/either'
+import { ClientNotFoundError } from '@/core/errors/errors/client-not-found-error'
+import { Injectable } from '@nestjs/common'
+import { EmailOrNameAlreadyRegisteredError } from '@/core/errors/errors/email-or-name-already-registered-error'
 
 // usuário vai poder editar o nome e o email
 
@@ -9,10 +13,14 @@ interface EditClientUseCaseRequest {
   email: string
 }
 
-interface EditClientUseCaseResponse {
-  cliente: Cliente
-}
+type EditClientUseCaseResponse = Either<
+  ClientNotFoundError | EmailOrNameAlreadyRegisteredError,
+  {
+    cliente: Cliente
+  }
+>
 
+@Injectable()
 export class EditClientUseCase {
   constructor(private clienteRepository: ClienteRepository) {}
 
@@ -25,7 +33,11 @@ export class EditClientUseCase {
     const cliente = await this.clienteRepository.findById(codigo)
 
     if (!cliente) {
-      throw new Error('Cliente não econtrado')
+      return left(new ClientNotFoundError())
+    }
+
+    if (cliente.email === email || cliente.nome === nome) {
+      return left(new EmailOrNameAlreadyRegisteredError())
     }
 
     // Realizando a alteração dos campos
@@ -34,6 +46,6 @@ export class EditClientUseCase {
 
     await this.clienteRepository.edit(cliente)
 
-    return { cliente }
+    return right({ cliente })
   }
 }

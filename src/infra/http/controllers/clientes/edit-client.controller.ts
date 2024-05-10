@@ -5,7 +5,6 @@ import {
   Param,
   Body,
 } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import {
   ApiBody,
   ApiOperation,
@@ -15,6 +14,7 @@ import {
 } from '@nestjs/swagger'
 import { z } from 'zod'
 import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
+import { EditClientUseCase } from '@/domain/application/use-cases/edit-client'
 
 const updateClientBodySchema = z.object({
   nome: z.string(),
@@ -34,7 +34,7 @@ class UpdateBodySwagger {
 @Controller('/servcad/client/:id')
 @ApiTags('Cliente')
 export class EditClientController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private editClientUseCase: EditClientUseCase) {}
 
   @ApiBody({
     type: UpdateBodySwagger,
@@ -52,38 +52,17 @@ export class EditClientController {
     status: 400,
     description: 'Usuário não encontrado',
   })
-  async handle(
-    @Param('id') id: string,
-    @Body() body: UpdateClientBodySchema,
-  ): Promise<listAllClientsDTO> {
+  async handle(@Param('id') id: string, @Body() body: UpdateClientBodySchema) {
     const { nome, email } = updateClientBodySchema.parse(body)
 
-    const cliente = await this.prisma.cliente.findUnique({
-      where: {
-        codigo: id,
-      },
+    const result = await this.editClientUseCase.execute({
+      codigo: id,
+      email,
+      nome,
     })
 
-    if (!cliente) {
-      throw new BadRequestException('Usuário não encontrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
-
-    if (cliente.email === email || cliente.nome === nome) {
-      throw new BadRequestException(
-        'Email ou nome que você informou já é o cadastrado.',
-      )
-    }
-
-    const updatedClient = await this.prisma.cliente.update({
-      where: {
-        codigo: cliente.codigo,
-      },
-      data: {
-        nome,
-        email,
-      },
-    })
-
-    return updatedClient
   }
 }

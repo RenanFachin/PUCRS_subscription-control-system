@@ -2,6 +2,7 @@ import { InMemoryClienteRepository } from 'test/repositories/in-memory-cliente-r
 import { makeClient } from 'test/factories/make-client'
 import { EditClientUseCase } from './edit-client'
 import { validateEmail } from '@/utils/validate-email-regex'
+import { EmailOrNameAlreadyRegisteredError } from '@/core/errors/errors/email-or-name-already-registered-error'
 
 let inMemoryClienteRepository: InMemoryClienteRepository
 let sut: EditClientUseCase
@@ -55,12 +56,13 @@ describe('Get a client by id', () => {
 
     inMemoryClienteRepository.register(novoCliente)
 
-    expect(async () => {
-      await sut.execute({
-        codigo: novoCliente.codigo.toString(),
-        nome: 'Renan Fachin',
-        email: 'renanfachin@email.com',
-      })
-    }).rejects.toThrow()
+    const result = await sut.execute({
+      codigo: novoCliente.codigo.toString(),
+      nome: 'Renan Fachin',
+      email: 'renanfachin@email.com',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(EmailOrNameAlreadyRegisteredError)
   })
 })

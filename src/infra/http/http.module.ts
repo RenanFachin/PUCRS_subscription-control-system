@@ -15,6 +15,7 @@ import { DatabaseModule } from '../database/database.module'
 import { RegisterClientUseCase } from '@/domain/application/use-cases/register-client'
 import { ListAllClientsUseCase } from '@/domain/application/use-cases/list-all-clients'
 import { GetClientByIdUseCase } from '@/domain/application/use-cases/get-client-by-id'
+import { EditClientUseCase } from '@/domain/application/use-cases/edit-client'
 
 @Module({
   imports: [DatabaseModule],
@@ -36,6 +37,7 @@ import { GetClientByIdUseCase } from '@/domain/application/use-cases/get-client-
     RegisterClientUseCase,
     ListAllClientsUseCase,
     GetClientByIdUseCase,
+    EditClientUseCase,
   ],
 })
 export class HttpModule {}
