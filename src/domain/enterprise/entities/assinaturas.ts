@@ -8,8 +8,8 @@ import { AssinaturaDetails } from '@/domain/application/use-cases/get-client-sub
 export interface AssinaturaProps {
   inicioVigencia: Date
   fimVigencia: Date
-  codApp: UniqueEntityCodigo
-  codCli: UniqueEntityCodigo
+  codApp: string
+  codCli: string
 }
 
 export class Assinatura extends Entity<AssinaturaProps> {
@@ -36,8 +36,8 @@ export class Assinatura extends Entity<AssinaturaProps> {
   getSubscriptionDetails(): AssinaturaDetails {
     return {
       codigoAssinatura: this.codigo.toValue(),
-      codigoCliente: this.props.codCli.toValue(),
-      codigoAplicativo: this.props.codApp.toValue(),
+      codigoCliente: this.props.codCli,
+      codigoAplicativo: this.props.codApp,
       dataInicio: this.props.inicioVigencia,
       dataEncerramento: this.props.fimVigencia,
       status: this.getStatus('TODAS') === 'ativa' ? 'ATIVA' : 'CANCELADA',

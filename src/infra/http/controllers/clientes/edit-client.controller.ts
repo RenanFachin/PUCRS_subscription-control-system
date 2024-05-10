@@ -5,7 +5,7 @@ import {
   Param,
   Body,
 } from '@nestjs/common'
-import { PrismaService } from '@/infra/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import {
   ApiBody,
   ApiOperation,

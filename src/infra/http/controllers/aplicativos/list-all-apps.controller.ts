@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common'
-import { PrismaService } from '@/infra/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'

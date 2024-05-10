@@ -1,11 +1,10 @@
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
 
 // usuário vai poder editar o custo mensal
 
 interface EditAppMonthlyCostUseCaseRequest {
-  codigo: UniqueEntityCodigo
+  codigo: string
   custoMensal: number
 }
 

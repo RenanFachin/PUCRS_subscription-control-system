@@ -1,5 +1,4 @@
 import { ClienteRepository } from '../repositories/cliente-repository'
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
 
 export interface AssinaturaDetails {
@@ -12,7 +11,7 @@ export interface AssinaturaDetails {
 }
 
 interface GetClientSubscriptionUseCaseRequest {
-  codigoCliente: UniqueEntityCodigo
+  codigoCliente: string
 }
 
 interface GetClientSubscriptionUseCaseResponse {
@@ -34,9 +33,8 @@ export class GetClientSubscriptionUseCase {
       throw new Error('Cliente não encontrado.')
     }
 
-    const assinaturas = await this.assinaturaRepository.listByClient(
-      cliente.codigo,
-    )
+    const assinaturas =
+      await this.assinaturaRepository.listByClient(codigoCliente)
 
     if (assinaturas.length === 0 || !assinaturas) {
       throw new Error('Este cliente não possui assinaturas.')

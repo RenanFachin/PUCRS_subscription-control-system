@@ -7,7 +7,7 @@ export interface ClientProps {
   nome: string
   email: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Cliente extends Entity<ClientProps> {

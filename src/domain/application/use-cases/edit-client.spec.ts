@@ -18,7 +18,7 @@ describe('Get a client by id', () => {
     inMemoryClienteRepository.register(novoCliente)
 
     await sut.execute({
-      codigo: novoCliente.codigo,
+      codigo: novoCliente.codigo.toString(),
       nome: 'Renan Fachin',
       email: 'renanfachin@email.com',
     })
@@ -41,7 +41,7 @@ describe('Get a client by id', () => {
 
     expect(async () => {
       await sut.execute({
-        codigo: novoCliente.codigo,
+        codigo: novoCliente.codigo.toString(),
         nome: 'Renan Fachin',
         email: 'renanfachinemail.com',
       })
@@ -57,7 +57,7 @@ describe('Get a client by id', () => {
 
     expect(async () => {
       await sut.execute({
-        codigo: novoCliente.codigo,
+        codigo: novoCliente.codigo.toString(),
         nome: 'Renan Fachin',
         email: 'renanfachin@email.com',
       })

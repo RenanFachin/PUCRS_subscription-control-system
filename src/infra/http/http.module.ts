@@ -11,9 +11,10 @@ import { EditClientController } from './controllers/clientes/edit-client.control
 import { GetClientByIdController } from './controllers/clientes/get-client-by-id.controller'
 import { ListAllClientsController } from './controllers/clientes/list-all-clients.controller'
 import { RegisterClientController } from './controllers/clientes/register-client.controller'
-import { PrismaService } from '../prisma/prisma.service'
+import { DatabaseModule } from '../database/database.module'
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [
     RegisterClientController,
     RegisterApllicationController,
@@ -28,6 +29,5 @@ import { PrismaService } from '../prisma/prisma.service'
     GetApplicationSubscriptionController,
     EditClientController,
   ],
-  providers: [PrismaService],
 })
 export class HttpModule {}

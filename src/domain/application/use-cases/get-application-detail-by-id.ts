@@ -1,9 +1,8 @@
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 
 interface GetApplicationDetailByIdCaseRequest {
-  codigo: UniqueEntityCodigo
+  codigo: string
 }
 
 interface GetApplicationDetailByIdCaseResponse {

@@ -19,7 +19,7 @@ describe('Get a client by id', () => {
     inMemoryClienteRepository.register(novoCliente)
 
     const { cliente } = await sut.execute({
-      codigo: novoCliente.codigo,
+      codigo: novoCliente.codigo.toString(),
     })
 
     // console.log(cliente)

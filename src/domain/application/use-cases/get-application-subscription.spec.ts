@@ -56,7 +56,7 @@ describe('Get subscriptions by cliente id', () => {
     await inMemoryAssinaturaRepository.register(terceiraAssinatura)
 
     const { assinaturas } = await sut.execute({
-      codigoAplicativo: aplicativo.codigo,
+      codigoAplicativo: aplicativo.codigo.toString(),
     })
 
     console.log(assinaturas)

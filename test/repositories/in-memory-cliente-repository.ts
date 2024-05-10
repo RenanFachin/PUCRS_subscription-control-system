@@ -1,4 +1,3 @@
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { ClienteRepository } from '@/domain/application/repositories/cliente-repository'
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 
@@ -9,8 +8,10 @@ export class InMemoryClienteRepository implements ClienteRepository {
     this.clientes.push(cliente)
   }
 
-  async findById(id: UniqueEntityCodigo) {
-    const cliente = this.clientes.find((cliente) => cliente.codigo === id)
+  async findById(id: string) {
+    const cliente = this.clientes.find(
+      (cliente) => cliente.codigo.toString() === id,
+    )
 
     if (!cliente) {
       return null

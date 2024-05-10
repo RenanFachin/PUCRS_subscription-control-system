@@ -21,7 +21,7 @@ describe('Get an app details by id', () => {
     inMemoryAplicativoRepository.register(newApp)
 
     const { aplicativo } = await sut.execute({
-      codigo: newApp.codigo,
+      codigo: newApp.codigo.toString(),
     })
 
     // console.log(cliente)

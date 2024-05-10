@@ -5,7 +5,7 @@ import {
   NotFoundException,
   Post,
 } from '@nestjs/common'
-import { PrismaService } from '@/infra/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { createsSubscriptionValidity } from 'src/utils/creates-subscription-validity'
 import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'

@@ -18,8 +18,8 @@ describe('Create a Subscription', () => {
     const aplicativo = makeApplication()
 
     const { assinatura } = await sut.execute({
-      codApp: aplicativo.codigo,
-      codCli: cliente.codigo,
+      codApp: aplicativo.codigo.toString(),
+      codCli: cliente.codigo.toString(),
     })
 
     // console.log(assinatura)

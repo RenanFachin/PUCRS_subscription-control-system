@@ -1,11 +1,10 @@
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { ClienteRepository } from '../repositories/cliente-repository'
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 
 // usuário vai poder editar o nome e o email
 
 interface EditClientUseCaseRequest {
-  codigo: UniqueEntityCodigo
+  codigo: string
   nome: string
   email: string
 }

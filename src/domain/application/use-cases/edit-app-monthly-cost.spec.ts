@@ -17,7 +17,7 @@ describe('Get a client by id', () => {
     inMemoryAplicativoRepository.register(novoApp)
 
     await sut.execute({
-      codigo: novoApp.codigo,
+      codigo: novoApp.codigo.toString(),
       custoMensal: 39.98,
     })
 

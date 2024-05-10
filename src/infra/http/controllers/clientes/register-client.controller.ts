@@ -1,6 +1,6 @@
 import { Body, ConflictException, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { PrismaService } from '@/infra/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { RegisterClienteDTO } from '../../dtos/register-client-dto'
 

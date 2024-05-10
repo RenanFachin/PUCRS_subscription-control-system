@@ -6,7 +6,7 @@ export interface AplicativoProps {
   nome: string
   custoMensal: number
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Aplicativo extends Entity<AplicativoProps> {

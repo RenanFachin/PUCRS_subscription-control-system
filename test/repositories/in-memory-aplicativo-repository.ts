@@ -1,4 +1,3 @@
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { AplicativoRepository } from '@/domain/application/repositories/aplicativo-repository'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 
@@ -9,9 +8,9 @@ export class InMemoryAplicativoRepository implements AplicativoRepository {
     this.aplicativos.push(aplicativo)
   }
 
-  async findById(id: UniqueEntityCodigo) {
+  async findById(id: string) {
     const aplicativo = this.aplicativos.find(
-      (aplicativo) => aplicativo.codigo === id,
+      (aplicativo) => aplicativo.codigo.toString() === id,
     )
 
     if (!aplicativo) {

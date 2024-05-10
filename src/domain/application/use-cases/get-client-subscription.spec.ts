@@ -55,7 +55,9 @@ describe('Get subscriptions by cliente id', () => {
     await inMemoryAssinaturaRepository.register(segundaAssinatura)
     await inMemoryAssinaturaRepository.register(terceiraAssinatura)
 
-    const { assinaturas } = await sut.execute({ codigoCliente: cliente.codigo })
+    const { assinaturas } = await sut.execute({
+      codigoCliente: cliente.codigo.toString(),
+    })
 
     expect(assinaturas.length).toBe(3)
     expect(inMemoryAssinaturaRepository.assinaturas[0].codCli).toBe(

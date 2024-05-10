@@ -1,10 +1,9 @@
 import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 
 interface RegisterSubscriptionUseCaseRequest {
-  codApp: UniqueEntityCodigo
-  codCli: UniqueEntityCodigo
+  codApp: string
+  codCli: string
 }
 
 interface RegisterSubscriptionUseCaseResponse {

@@ -1,9 +1,8 @@
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { ClienteRepository } from '../repositories/cliente-repository'
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 
 interface GetClientByIdUseCaseRequest {
-  codigo: UniqueEntityCodigo
+  codigo: string
 }
 
 interface GetClientByIdUseCaseResponse {

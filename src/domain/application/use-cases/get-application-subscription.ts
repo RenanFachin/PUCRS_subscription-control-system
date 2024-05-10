@@ -1,4 +1,3 @@
-import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
 
@@ -12,7 +11,7 @@ export interface AssinaturaDetails {
 }
 
 interface GetApplicationSubscriptionUseCaseRequest {
-  codigoAplicativo: UniqueEntityCodigo
+  codigoAplicativo: string
 }
 
 interface GetApplicationSubscriptionUseCaseResponse {
@@ -35,9 +34,8 @@ export class GetApplicationSubscriptionUseCase {
       throw new Error('Aplicativo não encontrado.')
     }
 
-    const assinaturas = await this.assinaturaRepository.listByApp(
-      aplicativo.codigo,
-    )
+    const assinaturas =
+      await this.assinaturaRepository.listByApp(codigoAplicativo)
 
     if (assinaturas.length === 0 || !assinaturas) {
       throw new Error('Este Aplicativo não possui assinaturas.')
