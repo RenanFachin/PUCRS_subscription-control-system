@@ -1,8 +1,8 @@
 import { Body, ConflictException, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { RegisterClienteDTO } from 'src/dtos/register-client-dto'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { z } from 'zod'
+import { RegisterClienteDTO } from '../../dtos/register-client-dto'
 
 const registerClientBodySchema = z.object({
   nome: z.string(),

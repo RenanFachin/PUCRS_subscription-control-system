@@ -5,13 +5,13 @@ import {
   NotFoundException,
   Post,
 } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { createsSubscriptionValidity } from 'src/utils/creates-subscription-validity'
 import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { RegisterSubscriptionDTO } from 'src/dtos/register-subscription-dto'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
-import { PaymentServiceEvent } from '@/payments/events/payment-service.event'
+import { RegisterSubscriptionDTO } from '../../dtos/register-subscription-dto'
+import { PaymentServiceEvent } from '../../payments/events/payment-service.event'
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),

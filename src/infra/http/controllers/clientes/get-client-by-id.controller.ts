@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
-import { listAllClientsDTO } from 'src/dtos/list-all-clients-dto'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
 @Controller('/servcad/client/:id')
 @ApiTags('Cliente')
 export class GetClientByIdController {

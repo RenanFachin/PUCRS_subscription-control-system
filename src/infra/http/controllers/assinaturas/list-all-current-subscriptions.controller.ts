@@ -1,8 +1,8 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { z } from 'zod'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ListAllCurrentSubscriptionsDTO } from 'src/dtos/list-all-current-subscriptions-dto'
+import { ListAllCurrentSubscriptionsDTO } from '../../dtos/list-all-current-subscriptions-dto'
 
 const listAllCurrentSubscriptionResponse = z.array(
   z.object({

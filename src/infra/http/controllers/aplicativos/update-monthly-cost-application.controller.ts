@@ -6,7 +6,7 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { z } from 'zod'
 import {
   ApiOperation,
@@ -15,7 +15,7 @@ import {
   ApiBody,
   ApiProperty,
 } from '@nestjs/swagger'
-import { listAllAppsDTO } from 'src/dtos/list-all-apps-dto'
+import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'
 
 const updateMonthlyCostApplicationBodySchema = z.object({
   custoMensal: z.number(),

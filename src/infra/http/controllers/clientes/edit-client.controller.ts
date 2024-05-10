@@ -5,8 +5,7 @@ import {
   Param,
   Body,
 } from '@nestjs/common'
-import { listAllClientsDTO } from 'src/dtos/list-all-clients-dto'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import {
   ApiBody,
   ApiOperation,
@@ -15,6 +14,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { z } from 'zod'
+import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
 
 const updateClientBodySchema = z.object({
   nome: z.string(),

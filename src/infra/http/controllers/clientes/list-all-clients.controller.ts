@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { z } from 'zod'
 
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { listAllClientsDTO } from 'src/dtos/list-all-clients-dto'
+import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
 
 const clientsResponse = z.array(
   z.object({

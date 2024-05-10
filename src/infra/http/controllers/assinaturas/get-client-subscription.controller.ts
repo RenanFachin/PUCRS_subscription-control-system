@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { SubscriptionDto } from 'src/dtos/get-client-subscription-dto'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
+import { SubscriptionDto } from '../../dtos/get-client-subscription-dto'
 
 @Controller('/servcad/asscli/:codcli')
 @ApiTags('Assinaturas')
