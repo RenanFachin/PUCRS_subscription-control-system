@@ -21,7 +21,9 @@ export class RegisterClientController {
   })
   @Post()
   @ApiOperation({ summary: 'Cria um cliente.' })
-  async handle(@Body() body: RegisterClientBodySchema) {
+  async handle(
+    @Body() body: RegisterClientBodySchema,
+  ): Promise<{ codCli: string }> {
     const { nome, email } = registerClientBodySchema.parse(body)
 
     const clientWithSameEmail = await this.prisma.cliente.findUnique({
@@ -34,11 +36,15 @@ export class RegisterClientController {
       throw new ConflictException('Cliente já cadastrado em nosso sistema.')
     }
 
-    await this.prisma.cliente.create({
+    const cliente = await this.prisma.cliente.create({
       data: {
         nome,
         email,
       },
     })
+
+    return {
+      codCli: cliente.codigo,
+    }
   }
 }

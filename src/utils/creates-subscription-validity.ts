@@ -1,6 +1,7 @@
 export function createsSubscriptionValidity() {
   const date = new Date()
-  const subscriptionValidity = date.setDate(date.getDate() + 30)
+  const freeTrialDays = 7
+  const subscriptionValidity = date.setDate(date.getDate() + freeTrialDays)
 
   return new Date(subscriptionValidity)
 }

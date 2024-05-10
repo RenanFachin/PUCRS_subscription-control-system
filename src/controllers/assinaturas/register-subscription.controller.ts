@@ -10,6 +10,8 @@ import { createsSubscriptionValidity } from 'src/utils/creates-subscription-vali
 import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { RegisterSubscriptionDTO } from 'src/dtos/register-subscription-dto'
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
+import { PaymentServiceEvent } from '@/payments/events/payment-service.event'
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),
@@ -23,7 +25,10 @@ type RegisterSubscriptionBodySchema = z.infer<
 @Controller('/servcad/assinaturas')
 @ApiTags('Assinaturas')
 export class RegisterSubscriptionController {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   @ApiBody({
     type: RegisterSubscriptionDTO,
@@ -76,8 +81,24 @@ export class RegisterSubscriptionController {
       },
     })
 
+    // evento de pagamento do serviço de cadastramento
+    const pagamentoEvent: PaymentServiceEvent = {
+      dataPagamento: new Date(),
+      codAssinatura: subscription.codigo,
+      valorPago: 0, // Como é uma assinatura gratuita inicialmente, o valor pago é zero (7 dias)
+    }
+    this.eventEmitter.emit('pagamentoServicoCadastramento', pagamentoEvent)
+
     return {
       subscription,
     }
+  }
+
+  @OnEvent('pagamentoServicoCadastramento')
+  handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
+    console.log(
+      'Evento de pagamento do serviço de cadastramento foi emitido:',
+      event,
+    )
   }
 }

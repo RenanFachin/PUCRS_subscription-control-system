@@ -23,7 +23,9 @@ export class RegisterApllicationController {
   })
   @Post()
   @ApiOperation({ summary: 'Cria um aplicativo.' })
-  async handle(@Body() body: RegisterApllicationBodySchema) {
+  async handle(
+    @Body() body: RegisterApllicationBodySchema,
+  ): Promise<{ codApp: string }> {
     const { nome, custoMensal } = registerApplicationBodySchema.parse(body)
 
     const isApplicationAlreadyRegistered =
@@ -37,11 +39,15 @@ export class RegisterApllicationController {
       throw new ConflictException('Aplicativo já cadastrado em nosso sistema.')
     }
 
-    await this.prisma.aplicativo.create({
+    const appRegistered = await this.prisma.aplicativo.create({
       data: {
         nome,
         custoMensal,
       },
     })
+
+    return {
+      codApp: appRegistered.codigo,
+    }
   }
 }

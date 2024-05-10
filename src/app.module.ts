@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+
 import { RegisterClientController } from './controllers/clientes/register-client.controller'
 import { RegisterApllicationController } from './controllers/aplicativos/register-application.controller'
 import { RegisterSubscriptionController } from './controllers/assinaturas/register-subscription.controller'
@@ -21,6 +23,7 @@ import { EditClientController } from './controllers/clientes/edit-client.control
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
   ],
   controllers: [
     RegisterClientController,
