@@ -16,7 +16,7 @@ export class CreateClientPresenter {
       codigo: cliente.codigo.toString(),
       nome: cliente.nome,
       email: cliente.email,
-      created_at: cliente.createdAt,
+      updatedAt: cliente.updatedAt,
     }
   }
 }

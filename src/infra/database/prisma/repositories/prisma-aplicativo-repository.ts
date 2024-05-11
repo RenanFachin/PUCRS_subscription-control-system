@@ -54,7 +54,14 @@ export class PrismaAplicativoRepository implements AplicativoRepository {
     })
   }
 
-  edit(aplicativo: Aplicativo): Promise<void> {
-    throw new Error('Method not implemented.')
+  async edit(aplicativo: Aplicativo): Promise<void> {
+    const data = PrismaAplicativoMapper.toPrisma(aplicativo)
+
+    await this.prisma.aplicativo.update({
+      where: {
+        codigo: data.codigo,
+      },
+      data,
+    })
   }
 }

@@ -1,12 +1,10 @@
 import {
   BadRequestException,
   Body,
-  ConflictException,
   Controller,
   Param,
   Patch,
 } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import {
   ApiOperation,
@@ -15,7 +13,8 @@ import {
   ApiBody,
   ApiProperty,
 } from '@nestjs/swagger'
-import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'
+import { EditAppMonthlyCostUseCase } from '@/domain/application/use-cases/edit-app-monthly-cost'
+import { CreateAppPresenter } from '../../presenters/app-presenter'
 
 const updateMonthlyCostApplicationBodySchema = z.object({
   custoMensal: z.number(),
@@ -33,7 +32,7 @@ class UpdateBodySwagger {
 @Controller('/servcad/aplicativos/:idAplicativo')
 @ApiTags('Aplicativos')
 export class UpdateMonthlyCostApplicationControlller {
-  constructor(private prisma: PrismaService) {}
+  constructor(private editAppMonthlyCostUseCase: EditAppMonthlyCostUseCase) {}
 
   @ApiBody({
     type: UpdateBodySwagger,
@@ -54,41 +53,22 @@ export class UpdateMonthlyCostApplicationControlller {
   async handle(
     @Param('idAplicativo') idAplicativo: string,
     @Body() body: UpdateMonthlyCostApplicationBodySchema,
-  ): Promise<listAllAppsDTO> {
-    /**
-     * [x] - Receber o pathParam e os dados do body
-     * [x] - Verificar se o aplicativo está cadastrado
-     * [x] - Verificar se o valor informado é o mesmo que está no db (evitar chamadas de update)
-     * [x] - Fazer o update do aplicativo
-     */
-
+  ) {
     const { custoMensal } = updateMonthlyCostApplicationBodySchema.parse(body)
 
-    const isApplicationRegistered = await this.prisma.aplicativo.findFirst({
-      where: {
-        codigo: idAplicativo,
-      },
+    const result = await this.editAppMonthlyCostUseCase.execute({
+      codigo: idAplicativo,
+      custoMensal,
     })
 
-    if (!isApplicationRegistered) {
-      throw new BadRequestException('Aplicativo não cadastrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    if (isApplicationRegistered.custoMensal === custoMensal) {
-      throw new ConflictException(
-        `O valor que você está tentando atualizar já é ${custoMensal}`,
-      )
+    const { aplicativo } = result.value
+
+    return {
+      aplicativo: CreateAppPresenter.toHTTP(aplicativo),
     }
-
-    const updatedAppData = await this.prisma.aplicativo.update({
-      where: {
-        codigo: idAplicativo,
-      },
-      data: {
-        custoMensal,
-      },
-    })
-
-    return updatedAppData
   }
 }

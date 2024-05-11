@@ -1,5 +1,8 @@
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
+import { Injectable } from '@nestjs/common'
+import { Either, left, right } from '@/core/either'
+import { AppNotFoundError } from '@/core/errors/errors/app-not-found-error'
 
 // usuário vai poder editar o custo mensal
 
@@ -8,10 +11,14 @@ interface EditAppMonthlyCostUseCaseRequest {
   custoMensal: number
 }
 
-interface EditAppMonthlyCostUseCaseResponse {
-  aplicativo: Aplicativo
-}
+type EditAppMonthlyCostUseCaseResponse = Either<
+  AppNotFoundError,
+  {
+    aplicativo: Aplicativo
+  }
+>
 
+@Injectable()
 export class EditAppMonthlyCostUseCase {
   constructor(private aplicativoRepository: AplicativoRepository) {}
 
@@ -23,7 +30,7 @@ export class EditAppMonthlyCostUseCase {
     const aplicativo = await this.aplicativoRepository.findById(codigo)
 
     if (!aplicativo) {
-      throw new Error('Aplcativo não econtrado')
+      return left(new AppNotFoundError())
     }
 
     // Realizando a alteração dos campos
@@ -31,6 +38,6 @@ export class EditAppMonthlyCostUseCase {
 
     await this.aplicativoRepository.edit(aplicativo)
 
-    return { aplicativo }
+    return right({ aplicativo })
   }
 }

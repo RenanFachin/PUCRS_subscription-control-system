@@ -15,6 +15,7 @@ import {
 import { z } from 'zod'
 import { listAllClientsDTO } from '../../dtos/list-all-clients-dto'
 import { EditClientUseCase } from '@/domain/application/use-cases/edit-client'
+import { CreateClientPresenter } from '../../presenters/client-presenter'
 
 const updateClientBodySchema = z.object({
   nome: z.string(),
@@ -63,6 +64,12 @@ export class EditClientController {
 
     if (result.isLeft()) {
       throw new BadRequestException(result.value.message)
+    }
+
+    const { cliente } = result.value
+
+    return {
+      cliente: CreateClientPresenter.toHTTP(cliente),
     }
   }
 }
