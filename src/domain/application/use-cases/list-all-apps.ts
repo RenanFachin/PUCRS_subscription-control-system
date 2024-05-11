@@ -1,10 +1,16 @@
+import { Injectable } from '@nestjs/common'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
 import { Aplicativo } from '@/domain/enterprise/entities/aplicativos'
+import { Either, right } from '@/core/either'
 
-interface ListAllAppsUseCaseResponse {
-  aplicativos: Aplicativo[]
-}
+type ListAllAppsUseCaseResponse = Either<
+  null,
+  {
+    aplicativos: Aplicativo[]
+  }
+>
 
+@Injectable()
 export class ListAllAppsUseCase {
   constructor(private aplicativoRepository: AplicativoRepository) {}
 
@@ -15,6 +21,6 @@ export class ListAllAppsUseCase {
       throw new Error()
     }
 
-    return { aplicativos }
+    return right({ aplicativos })
   }
 }

@@ -1,8 +1,9 @@
 import { Controller, Get } from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'
+import { ListAllAppsUseCase } from '@/domain/application/use-cases/list-all-apps'
+import { AppPresenter } from '../../presenters/app-presenter'
 
 const appsResponse = z.array(
   z.object({
@@ -17,7 +18,7 @@ type AppsResponse = z.infer<typeof appsResponse>
 @Controller('/servcad/aplicativos')
 @ApiTags('Aplicativos')
 export class ListAllAppsController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private listAllAppsUseCase: ListAllAppsUseCase) {}
 
   @Get()
   @ApiOperation({
@@ -29,8 +30,14 @@ export class ListAllAppsController {
     type: [listAllAppsDTO],
   })
   async handle(): Promise<AppsResponse> {
-    const apps = await this.prisma.aplicativo.findMany()
+    const result = await this.listAllAppsUseCase.execute()
 
-    return apps
+    if (result.isLeft()) {
+      throw new Error()
+    }
+
+    const aplicativos = result.value.aplicativos
+
+    return aplicativos.map(AppPresenter.toHTTP)
   }
 }

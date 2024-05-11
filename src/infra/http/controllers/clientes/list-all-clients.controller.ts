@@ -8,8 +8,7 @@ import { ClientPresenter } from '../../presenters/client-presenter'
 @Controller('/servcad/clientes')
 @ApiTags('Cliente')
 export class ListAllClientsController {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private listAllClients: ListAllClientsUseCase) { }
+  constructor(private listAllClients: ListAllClientsUseCase) {}
 
   @Get()
   @ApiOperation({

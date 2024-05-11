@@ -26,12 +26,12 @@ describe('Get all apps', () => {
   })
 
   it('should be able to get all apps', async () => {
-    const { aplicativos } = await sut.execute()
+    const aplicativos = await sut.execute()
 
-    // console.log(aplicativos)
+    // console.log(aplicativos.value?.aplicativos)
 
-    expect(aplicativos[2].codigo).toBeTruthy() // Espero que não seja null ou undefined
-    expect(aplicativos).length(3) // Espero que o array tenha 3 posições ['','','']
+    expect(aplicativos.value?.aplicativos).toBeTruthy() // Espero que não seja null ou undefined
+    expect(aplicativos.value?.aplicativos).length(3) // Espero que o array tenha 3 posições ['','','']
     expect(inMemoryAplicativoRepository.aplicativos[1].nome).toEqual('Spotify') // Espero que a segunda posição do array seja o aplicativo com nome spotify
   })
 })

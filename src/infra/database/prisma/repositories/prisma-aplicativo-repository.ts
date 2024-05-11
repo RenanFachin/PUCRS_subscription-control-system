@@ -42,8 +42,16 @@ export class PrismaAplicativoRepository implements AplicativoRepository {
     return PrismaAplicativoMapper.toDomain(application)
   }
 
-  findAll(): Promise<Aplicativo[] | null> {
-    throw new Error('Method not implemented.')
+  async findAll(): Promise<Aplicativo[] | null> {
+    const aplicativos = await this.prisma.aplicativo.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return aplicativos.map((aplicativo) => {
+      return PrismaAplicativoMapper.toDomain(aplicativo)
+    })
   }
 
   edit(aplicativo: Aplicativo): Promise<void> {

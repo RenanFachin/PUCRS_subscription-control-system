@@ -18,6 +18,7 @@ import { GetClientByIdUseCase } from '@/domain/application/use-cases/get-client-
 import { EditClientUseCase } from '@/domain/application/use-cases/edit-client'
 import { RegisterApplicationUseCase } from '@/domain/application/use-cases/register-application'
 import { GetApplicationDetailByIdCase } from '@/domain/application/use-cases/get-application-detail-by-id'
+import { ListAllAppsUseCase } from '@/domain/application/use-cases/list-all-apps'
 
 @Module({
   imports: [DatabaseModule],
@@ -42,6 +43,7 @@ import { GetApplicationDetailByIdCase } from '@/domain/application/use-cases/get
     EditClientUseCase,
     RegisterApplicationUseCase,
     GetApplicationDetailByIdCase,
+    ListAllAppsUseCase,
   ],
 })
 export class HttpModule {}

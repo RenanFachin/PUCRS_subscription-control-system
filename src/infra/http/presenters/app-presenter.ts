@@ -5,8 +5,8 @@ export class AppPresenter {
     return {
       codigo: aplicativo.codigo.toString(),
       nome: aplicativo.nome,
-      custo_mensal: aplicativo.custoMensal,
-      created_at: aplicativo.createdAt,
+      custoMensal: aplicativo.custoMensal,
+      createdAt: aplicativo.createdAt,
     }
   }
 }
