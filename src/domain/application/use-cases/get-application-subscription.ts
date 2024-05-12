@@ -1,5 +1,8 @@
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
 import { AplicativoRepository } from '../repositories/aplicativo-repository'
+import { Injectable } from '@nestjs/common'
+import { Either, left, right } from '@/core/either'
+import { AppNotFoundError } from '@/core/errors/errors/app-not-found-error'
 
 export interface AssinaturaDetails {
   codigoAssinatura: string
@@ -14,10 +17,14 @@ interface GetApplicationSubscriptionUseCaseRequest {
   codigoAplicativo: string
 }
 
-interface GetApplicationSubscriptionUseCaseResponse {
-  assinaturas: AssinaturaDetails[]
-}
+type GetApplicationSubscriptionUseCaseResponse = Either<
+  AppNotFoundError,
+  {
+    assinaturas: AssinaturaDetails[]
+  }
+>
 
+@Injectable()
 export class GetApplicationSubscriptionUseCase {
   constructor(
     private aplicativoRepository: AplicativoRepository,
@@ -31,7 +38,7 @@ export class GetApplicationSubscriptionUseCase {
       await this.aplicativoRepository.findById(codigoAplicativo)
 
     if (!aplicativo) {
-      throw new Error('Aplicativo não encontrado.')
+      return left(new AppNotFoundError())
     }
 
     const assinaturas =
@@ -48,6 +55,6 @@ export class GetApplicationSubscriptionUseCase {
       }),
     )
 
-    return { assinaturas: assinaturasComStatus }
+    return right({ assinaturas: assinaturasComStatus })
   }
 }

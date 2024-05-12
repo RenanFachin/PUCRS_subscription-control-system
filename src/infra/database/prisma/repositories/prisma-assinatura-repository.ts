@@ -92,7 +92,31 @@ export class PrismaAssinaturaRepository implements AssinaturaRepository {
   }
 
   async listByApp(id: string): Promise<AssinaturaDetails[]> {
-    throw new Error(id)
+    const appDetails = await this.prisma.aplicativo.findMany({
+      where: { codigo: id },
+      select: {
+        assinaturas: {
+          select: {
+            codigo: true,
+            codApp: true,
+            codCli: true,
+            inicioVigencia: true,
+            fimVigencia: true,
+            status: true,
+          },
+        },
+      },
+    })
+
+    if (!appDetails?.length) return []
+
+    const assinaturas: AssinaturaDetails[] = appDetails.flatMap((app) =>
+      app.assinaturas.map((assinatura) =>
+        PrismaAssinaturaDetailsMapper.toDomain(assinatura),
+      ),
+    )
+
+    return assinaturas
   }
 
   async findByClientIdAndAppId(

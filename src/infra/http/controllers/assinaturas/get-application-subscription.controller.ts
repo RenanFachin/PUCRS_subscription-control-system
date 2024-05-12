@@ -1,12 +1,15 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { ApplicationSubscriptionDTO } from '../../dtos/get-application-subscription-dto'
+import { GetApplicationSubscriptionUseCase } from '@/domain/application/use-cases/get-application-subscription'
+import { AssinaturaWithStatusPresenter } from '../../presenters/subscription-presenter'
 
 @Controller('/servcad/assapp/:codapp')
 @ApiTags('Assinaturas')
 export class GetApplicationSubscriptionController {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private getApplicationSubscriptionUseCase: GetApplicationSubscriptionUseCase,
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -19,61 +22,18 @@ export class GetApplicationSubscriptionController {
   })
   @ApiResponse({ status: 400, description: 'Aplicativo não cadatrado.' })
   async handle(@Param('codapp') codapp: string) {
-    const isApplicationRegistered = await this.prisma.aplicativo.findFirst({
-      where: {
-        codigo: codapp,
-      },
+    const result = await this.getApplicationSubscriptionUseCase.execute({
+      codigoAplicativo: codapp,
     })
 
-    if (!isApplicationRegistered) {
-      throw new BadRequestException('Aplicativo não cadatrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    const applicationDetails = await this.prisma.aplicativo.findMany({
-      where: {
-        codigo: codapp,
-      },
-      include: {
-        assinaturas: {
-          select: {
-            codigo: true,
-            cliente: {
-              select: {
-                codigo: true,
-                nome: true,
-                email: true,
-              },
-            },
-            aplicativo: {
-              select: {
-                codigo: true,
-                nome: true,
-                custoMensal: true,
-              },
-            },
-            inicioVigencia: true,
-            fimVigencia: true,
-          },
-        },
-      },
-    })
+    const assinaturas = result.value.assinaturas
 
-    const dataHoje = new Date()
-    const subscriptions = applicationDetails.flatMap((cliente) =>
-      cliente.assinaturas.map((assinatura) => ({
-        codigoAssinatura: assinatura.codigo,
-        codigoCliente: assinatura.cliente,
-        codigoAplicativo: assinatura.aplicativo,
-        dataInicio: assinatura.inicioVigencia,
-        dataFim: assinatura.fimVigencia,
-        status:
-          assinatura.inicioVigencia <= dataHoje &&
-          dataHoje <= assinatura.fimVigencia
-            ? 'ATIVA'
-            : 'CANCELADA',
-      })),
-    )
-
-    return subscriptions
+    return {
+      assinaturas: assinaturas.map(AssinaturaWithStatusPresenter.toHTTP),
+    }
   }
 }

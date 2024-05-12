@@ -5,6 +5,7 @@ import { InMemoryAssinaturaRepository } from 'test/repositories/in-memory-assina
 import { makeClient } from 'test/factories/make-client'
 import { makeSubscription } from 'test/factories/make-subscription'
 import { GetApplicationSubscriptionUseCase } from './get-application-subscription'
+import { AppNotFoundError } from '@/core/errors/errors/app-not-found-error'
 
 let inMemoryClienteRepository: InMemoryClienteRepository
 let inMemoryAplicativoRepository: InMemoryAplicativoRepository
@@ -55,21 +56,31 @@ describe('Get subscriptions by cliente id', () => {
     await inMemoryAssinaturaRepository.register(segundaAssinatura)
     await inMemoryAssinaturaRepository.register(terceiraAssinatura)
 
-    const { assinaturas } = await sut.execute({
+    const assinaturas = await sut.execute({
       codigoAplicativo: aplicativo.codigo.toString(),
     })
 
     // console.log(assinaturas)
 
-    expect(assinaturas.length).toBe(3)
-    expect(inMemoryAssinaturaRepository.assinaturas[0].codApp).toBe(
-      aplicativo.codigo,
-    )
-    expect(inMemoryAssinaturaRepository.assinaturas[1].codApp).toBe(
-      aplicativo.codigo,
-    )
-    expect(inMemoryAssinaturaRepository.assinaturas[2].codApp).toBe(
-      aplicativo.codigo,
-    )
+    if (assinaturas.isRight()) {
+      expect(assinaturas.value.assinaturas.length).toBe(3)
+      expect(inMemoryAssinaturaRepository.assinaturas[0].codApp).toBe(
+        aplicativo.codigo,
+      )
+      expect(inMemoryAssinaturaRepository.assinaturas[1].codApp).toBe(
+        aplicativo.codigo,
+      )
+      expect(inMemoryAssinaturaRepository.assinaturas[2].codApp).toBe(
+        aplicativo.codigo,
+      )
+    }
+  })
+
+  it('should return an error if the app is not found', async () => {
+    const codigoAplicativo = 'non_existent_code'
+    const response = await sut.execute({ codigoAplicativo })
+
+    expect(response.isLeft()).toBe(true)
+    expect(response.value).toBeInstanceOf(AppNotFoundError)
   })
 })
