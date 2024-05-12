@@ -8,7 +8,7 @@ export class TasksService implements OnModuleInit {
 
   private readonly logger = new Logger(TasksService.name)
 
-  @Interval(108000)
+  @Interval(30000)
   handleInterval() {
     this.logger.debug('Verificação da validade das assinaturas realizada!!')
   }
@@ -17,7 +17,7 @@ export class TasksService implements OnModuleInit {
     await this.checkSubscriptions()
   }
 
-  @Interval(108000) // a cada 30 minutos, realizar uma verificação
+  @Interval(30000) // a cada 30 segundos, realizar uma verificação
   async checkSubscriptions() {
     const currentDate = new Date()
 
@@ -27,7 +27,7 @@ export class TasksService implements OnModuleInit {
         fimVigencia: {
           lt: currentDate,
         },
-        status: 'ativa',
+        OR: [{ status: 'ativa' }, { status: null }],
       },
       data: {
         status: 'cancelada',

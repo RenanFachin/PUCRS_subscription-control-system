@@ -119,6 +119,11 @@ Execute o projeto
 npm run start:dev
 ```
 
+Populando o banco de dados
+```bash
+npx prisma db seed
+```
+
 Visualizando o banco de dados
 ```bash
 npx prisma studio
