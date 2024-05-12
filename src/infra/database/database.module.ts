@@ -5,6 +5,7 @@ import { PrismaAssinaturaRepository } from './prisma/repositories/prisma-assinat
 import { PrismaClienteRepository } from './prisma/repositories/prisma-cliente-repository'
 import { ClienteRepository } from '@/domain/application/repositories/cliente-repository'
 import { AplicativoRepository } from '@/domain/application/repositories/aplicativo-repository'
+import { AssinaturaRepository } from '@/domain/application/repositories/assinatura-repository'
 
 @Module({
   providers: [
@@ -17,6 +18,10 @@ import { AplicativoRepository } from '@/domain/application/repositories/aplicati
       provide: AplicativoRepository,
       useClass: PrismaAplicativoRepository,
     },
+    {
+      provide: AssinaturaRepository,
+      useClass: PrismaAssinaturaRepository,
+    },
     PrismaAplicativoRepository,
     PrismaAssinaturaRepository,
     PrismaClienteRepository,
@@ -27,6 +32,7 @@ import { AplicativoRepository } from '@/domain/application/repositories/aplicati
     PrismaAssinaturaRepository,
     ClienteRepository,
     AplicativoRepository,
+    AssinaturaRepository,
   ],
 })
 export class DatabaseModule {}

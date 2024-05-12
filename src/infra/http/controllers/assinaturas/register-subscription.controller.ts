@@ -1,17 +1,11 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  NotFoundException,
-  Post,
-} from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { createsSubscriptionValidity } from 'src/utils/creates-subscription-validity'
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 import { RegisterSubscriptionDTO } from '../../dtos/register-subscription-dto'
 import { PaymentServiceEvent } from '../../payments/events/payment-service.event'
+import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/register-subscription'
+import { CreateAssinaturaPresenter } from '../../presenters/subscription-presenter'
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),
@@ -26,7 +20,7 @@ type RegisterSubscriptionBodySchema = z.infer<
 @ApiTags('Assinaturas')
 export class RegisterSubscriptionController {
   constructor(
-    private prisma: PrismaService,
+    private registerSubscrition: RegisterSubscriptionUseCase,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -38,59 +32,27 @@ export class RegisterSubscriptionController {
   async handle(@Body() body: RegisterSubscriptionBodySchema) {
     const { codApp, codCli } = registerSubscriptionBodySchema.parse(body)
 
-    /**
-     * [x] - Verificar se o cliente existe
-     * [x] - Verificar se o aplicativo existe
-     * [x] - Verificar se já existe uma assinatura válida desde cliente e aplicativo
-     * [x] - Realizar a criação do registro
-     */
-
-    const Client = await this.prisma.cliente.findFirst({
-      where: {
-        codigo: codCli,
-      },
+    const result = await this.registerSubscrition.execute({
+      codApp,
+      codCli,
     })
 
-    const Application = await this.prisma.aplicativo.findFirst({
-      where: {
-        codigo: codApp,
-      },
-    })
-
-    if (!Client || !Application) {
-      throw new NotFoundException('Usuário ou Aplicativo não encontrados.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    const isClientAlreadyRegisteredInThisApplication =
-      await this.prisma.assinatura.findFirst({
-        where: {
-          codApp,
-          codCli,
-        },
-      })
-
-    if (isClientAlreadyRegisteredInThisApplication) {
-      throw new BadRequestException('Usuário já registrado neste aplicativo')
-    }
-
-    const subscription = await this.prisma.assinatura.create({
-      data: {
-        codApp,
-        codCli,
-        fimVigencia: createsSubscriptionValidity(),
-      },
-    })
+    const { assinatura } = result.value
 
     // evento de pagamento do serviço de cadastramento
     const pagamentoEvent: PaymentServiceEvent = {
       dataPagamento: new Date(),
-      codAssinatura: subscription.codigo,
+      codAssinatura: String(assinatura.codigo),
       valorPago: 0, // Como é uma assinatura gratuita inicialmente, o valor pago é zero (7 dias)
     }
     this.eventEmitter.emit('pagamentoServicoCadastramento', pagamentoEvent)
 
     return {
-      subscription,
+      assinatura: CreateAssinaturaPresenter.toHTTP(assinatura),
     }
   }
 

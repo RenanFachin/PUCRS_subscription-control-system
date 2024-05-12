@@ -1,6 +1,6 @@
 import { UniqueEntityCodigo } from '@/core/entities/unique-entity-codigo'
 import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
-import { Assinatura as PrismaAssinatura } from '@prisma/client'
+import { Prisma, Assinatura as PrismaAssinatura } from '@prisma/client'
 
 export class PrismaAssinaturaMapper {
   static toDomain(raw: PrismaAssinatura): Assinatura {
@@ -13,5 +13,17 @@ export class PrismaAssinaturaMapper {
       },
       new UniqueEntityCodigo(raw.codigo),
     )
+  }
+
+  static toPrisma(
+    assinatura: Assinatura,
+  ): Prisma.AssinaturaUncheckedCreateInput {
+    return {
+      codigo: assinatura.codigo.toString(),
+      codApp: assinatura.codApp.toString(),
+      codCli: assinatura.codCli.toString(),
+      inicioVigencia: assinatura.inicioVigencia,
+      fimVigencia: assinatura.fimVigencia,
+    }
   }
 }

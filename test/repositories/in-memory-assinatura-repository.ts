@@ -6,6 +6,8 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
 
   async register(assinatura: Assinatura) {
     this.assinaturas.push(assinatura)
+
+    return assinatura
   }
 
   async findAll() {
@@ -36,5 +38,20 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
     )
 
     return assinaturas
+  }
+
+  findByClientIdAndAppId(
+    clientId: string,
+    appId: string,
+  ): Promise<Assinatura | null> {
+    return new Promise((resolve) => {
+      const assinaturaEncontrada = this.assinaturas.find(
+        (assinatura) =>
+          assinatura.codCli.toString() === clientId &&
+          assinatura.codApp.toString() === appId,
+      )
+
+      resolve(assinaturaEncontrada || null)
+    })
   }
 }

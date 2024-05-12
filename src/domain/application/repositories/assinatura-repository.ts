@@ -1,9 +1,13 @@
 import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
 import { AssinaturaDetails } from '../use-cases/get-client-subscription'
 
-export interface AssinaturaRepository {
-  register(assinatura: Assinatura): Promise<void>
-  findAll(): Promise<AssinaturaDetails[] | null>
-  listByClient(id: string): Promise<AssinaturaDetails[]>
-  listByApp(id: string): Promise<AssinaturaDetails[]>
+export abstract class AssinaturaRepository {
+  abstract register(assinatura: Assinatura): Promise<Assinatura>
+  abstract findAll(): Promise<AssinaturaDetails[] | null>
+  abstract listByClient(id: string): Promise<AssinaturaDetails[]>
+  abstract listByApp(id: string): Promise<AssinaturaDetails[]>
+  abstract findByClientIdAndAppId(
+    clientId: string,
+    appId: string,
+  ): Promise<Assinatura | null>
 }

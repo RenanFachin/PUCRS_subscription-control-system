@@ -1,6 +1,5 @@
 import { ClienteRepository } from '@/domain/application/repositories/cliente-repository'
 import { Cliente } from '@/domain/enterprise/entities/cliente'
-import { BadRequestException } from '@nestjs/common'
 
 export class InMemoryClienteRepository implements ClienteRepository {
   public clientes: Cliente[] = []
@@ -17,7 +16,7 @@ export class InMemoryClienteRepository implements ClienteRepository {
     )
 
     if (!cliente) {
-      throw new BadRequestException('Usuário não encontrado.')
+      return null
     }
 
     return cliente
