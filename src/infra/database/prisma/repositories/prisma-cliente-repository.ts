@@ -44,6 +44,20 @@ export class PrismaClienteRepository implements ClienteRepository {
     return PrismaClienteMapper.toDomain(cliente)
   }
 
+  async findByEmail(email: string): Promise<Cliente | null> {
+    const cliente = await this.prisma.cliente.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    if (!cliente) {
+      return null
+    }
+
+    return PrismaClienteMapper.toDomain(cliente)
+  }
+
   async findAll(): Promise<Cliente[]> {
     const clientes = await this.prisma.cliente.findMany({
       orderBy: {
