@@ -2,7 +2,10 @@ import { AssinaturaRepository } from '@/domain/application/repositories/assinatu
 import { AssinaturaDetails } from '@/domain/application/use-cases/get-client-subscription'
 import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
 import { Injectable } from '@nestjs/common'
-import { PrismaAssinaturaMapper } from '../mappers/prisma-assinatura-mapper'
+import {
+  PrismaAssinaturaDetailsMapper,
+  PrismaAssinaturaMapper,
+} from '../mappers/prisma-assinatura-mapper'
 import { PrismaService } from '../prisma.service'
 
 @Injectable()
@@ -61,11 +64,35 @@ export class PrismaAssinaturaRepository implements AssinaturaRepository {
   }
 
   async listByClient(id: string): Promise<AssinaturaDetails[]> {
-    throw new Error('Method not implemented.')
+    const clientDetails = await this.prisma.cliente.findMany({
+      where: { codigo: id },
+      select: {
+        assinaturas: {
+          select: {
+            codigo: true,
+            codApp: true,
+            codCli: true,
+            inicioVigencia: true,
+            fimVigencia: true,
+            status: true,
+          },
+        },
+      },
+    })
+
+    if (!clientDetails?.length) return []
+
+    const assinaturas: AssinaturaDetails[] = clientDetails.flatMap((client) =>
+      client.assinaturas.map((assinatura) =>
+        PrismaAssinaturaDetailsMapper.toDomain(assinatura),
+      ),
+    )
+
+    return assinaturas
   }
 
   async listByApp(id: string): Promise<AssinaturaDetails[]> {
-    throw new Error('Method not implemented.')
+    throw new Error(id)
   }
 
   async findByClientIdAndAppId(

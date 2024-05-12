@@ -1,5 +1,8 @@
 import { ClienteRepository } from '../repositories/cliente-repository'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
+import { Injectable } from '@nestjs/common'
+import { Either, left, right } from '@/core/either'
+import { ClientNotFoundError } from '@/core/errors/errors/client-not-found-error'
 
 export interface AssinaturaDetails {
   codigoAssinatura: string
@@ -14,10 +17,14 @@ interface GetClientSubscriptionUseCaseRequest {
   codigoCliente: string
 }
 
-interface GetClientSubscriptionUseCaseResponse {
-  assinaturas: AssinaturaDetails[]
-}
+type GetClientSubscriptionUseCaseResponse = Either<
+  ClientNotFoundError,
+  {
+    assinaturas: AssinaturaDetails[]
+  }
+>
 
+@Injectable()
 export class GetClientSubscriptionUseCase {
   constructor(
     private clienteRepository: ClienteRepository,
@@ -30,15 +37,11 @@ export class GetClientSubscriptionUseCase {
     const cliente = await this.clienteRepository.findById(codigoCliente)
 
     if (!cliente) {
-      throw new Error('Cliente não encontrado.')
+      return left(new ClientNotFoundError())
     }
 
     const assinaturas =
       await this.assinaturaRepository.listByClient(codigoCliente)
-
-    if (assinaturas.length === 0 || !assinaturas) {
-      throw new Error('Este cliente não possui assinaturas.')
-    }
 
     const assinaturasComStatus: AssinaturaDetails[] = assinaturas.map(
       (assinatura) => ({
@@ -51,6 +54,6 @@ export class GetClientSubscriptionUseCase {
       }),
     )
 
-    return { assinaturas: assinaturasComStatus }
+    return right({ assinaturas: assinaturasComStatus })
   }
 }

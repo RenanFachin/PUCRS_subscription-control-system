@@ -1,12 +1,15 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { SubscriptionDto } from '../../dtos/get-client-subscription-dto'
+import { GetClientSubscriptionUseCase } from '@/domain/application/use-cases/get-client-subscription'
+import { AssinaturaWithStatusPresenter } from '../../presenters/subscription-presenter'
 
 @Controller('/servcad/asscli/:codcli')
 @ApiTags('Assinaturas')
 export class GetClientSubscriptionController {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private getClientSubscriptionUseCase: GetClientSubscriptionUseCase,
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -19,53 +22,18 @@ export class GetClientSubscriptionController {
   })
   @ApiResponse({ status: 400, description: 'Cliente não cadatrado.' })
   async handle(@Param('codcli') codcli: string) {
-    const isClientRegistered = await this.prisma.cliente.findFirst({
-      where: {
-        codigo: codcli,
-      },
+    const result = await this.getClientSubscriptionUseCase.execute({
+      codigoCliente: codcli,
     })
 
-    if (!isClientRegistered) {
-      throw new BadRequestException('Cliente não cadatrado.')
+    if (result.isLeft()) {
+      throw new BadRequestException(result.value.message)
     }
 
-    const clientDetails = await this.prisma.cliente.findMany({
-      where: {
-        codigo: codcli,
-      },
-      include: {
-        assinaturas: {
-          select: {
-            codigo: true,
-            aplicativo: {
-              select: {
-                nome: true,
-                custoMensal: true,
-              },
-            },
-            inicioVigencia: true,
-            fimVigencia: true,
-          },
-        },
-      },
-    })
+    const assinaturas = result.value.assinaturas
 
-    const dataHoje = new Date()
-    const subscriptions = clientDetails.flatMap((cliente) =>
-      cliente.assinaturas.map((assinatura) => ({
-        codigoAssinatura: assinatura.codigo,
-        codigoCliente: cliente.codigo,
-        codigoAplicativo: assinatura.aplicativo,
-        dataInicio: assinatura.inicioVigencia,
-        dataFim: assinatura.fimVigencia,
-        status:
-          assinatura.inicioVigencia <= dataHoje &&
-          dataHoje <= assinatura.fimVigencia
-            ? 'ATIVA'
-            : 'CANCELADA',
-      })),
-    )
-
-    return subscriptions
+    return {
+      assinaturas: assinaturas.map(AssinaturaWithStatusPresenter.toHTTP),
+    }
   }
 }

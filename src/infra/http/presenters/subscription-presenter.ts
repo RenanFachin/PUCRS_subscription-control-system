@@ -36,7 +36,6 @@ export class AssinaturaWithStatusPresenter {
       inicioVigencia: assinatura.dataInicio,
       fimVigencia: assinatura.dataEncerramento,
       status: assinatura.status,
-      // subscriptionDetails: assinatura.getSubscriptionDetails,
     }
   }
 }

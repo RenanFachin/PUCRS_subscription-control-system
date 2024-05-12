@@ -37,10 +37,6 @@ export class GetApplicationSubscriptionUseCase {
     const assinaturas =
       await this.assinaturaRepository.listByApp(codigoAplicativo)
 
-    if (assinaturas.length === 0 || !assinaturas) {
-      throw new Error('Este Aplicativo não possui assinaturas.')
-    }
-
     const assinaturasComStatus: AssinaturaDetails[] = assinaturas.map(
       (assinatura) => ({
         codigoAssinatura: assinatura.codigoAssinatura,

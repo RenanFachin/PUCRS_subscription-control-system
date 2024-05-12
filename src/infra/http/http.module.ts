@@ -22,6 +22,7 @@ import { ListAllAppsUseCase } from '@/domain/application/use-cases/list-all-apps
 import { EditAppMonthlyCostUseCase } from '@/domain/application/use-cases/edit-app-monthly-cost'
 import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/register-subscription'
 import { ListAllSubscriptionUseCase } from '@/domain/application/use-cases/list-all-subscription'
+import { GetClientSubscriptionUseCase } from '@/domain/application/use-cases/get-client-subscription'
 
 @Module({
   imports: [DatabaseModule],
@@ -50,6 +51,7 @@ import { ListAllSubscriptionUseCase } from '@/domain/application/use-cases/list-
     EditAppMonthlyCostUseCase,
     RegisterSubscriptionUseCase,
     ListAllSubscriptionUseCase,
+    GetClientSubscriptionUseCase,
   ],
 })
 export class HttpModule {}

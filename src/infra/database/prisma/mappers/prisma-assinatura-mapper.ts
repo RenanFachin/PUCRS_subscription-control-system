@@ -30,17 +30,22 @@ export class PrismaAssinaturaMapper {
 }
 
 export class PrismaAssinaturaDetailsMapper {
-  static toDomain(raw: AssinaturaDetails): Assinatura {
-    return Assinatura.create(
-      {
-        codApp: raw.codigoAplicativo,
-        codCli: raw.codigoCliente,
-        inicioVigencia: raw.dataInicio,
-        fimVigencia: raw.dataEncerramento,
-        status: raw.status || '',
-      },
-      new UniqueEntityCodigo(raw.codigoAssinatura),
-    )
+  static toDomain(assinatura: {
+    inicioVigencia: Date
+    fimVigencia: Date
+    codApp: string
+    codCli: string
+    status: string | null
+    codigo: string
+  }): AssinaturaDetails {
+    return {
+      codigoAssinatura: assinatura.codigo,
+      codigoCliente: assinatura.codCli,
+      codigoAplicativo: assinatura.codApp,
+      dataInicio: assinatura.inicioVigencia,
+      dataEncerramento: assinatura.fimVigencia,
+      status: assinatura.status || '',
+    }
   }
 
   static toPrisma(
