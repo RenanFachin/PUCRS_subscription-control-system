@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, ConflictException, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { RegisterClienteDTO } from '../../dtos/register-client-dto'
@@ -31,7 +31,7 @@ export class RegisterClientController {
     })
 
     if (result.isLeft()) {
-      throw new Error()
+      throw new ConflictException(result.value.message)
     }
 
     const { cliente } = result.value

@@ -1,7 +1,8 @@
 import { Cliente } from '@/domain/enterprise/entities/cliente'
 import { ClienteRepository } from '../repositories/cliente-repository'
 import { Injectable } from '@nestjs/common'
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
+import { UserAlreadyExistsError } from '@/core/errors/errors/user-already-exists-error'
 
 interface RegisterClientUseCaseRequest {
   nome: string
@@ -9,7 +10,7 @@ interface RegisterClientUseCaseRequest {
 }
 
 type RegisterClientUseCaseResponse = Either<
-  null,
+  UserAlreadyExistsError,
   {
     cliente: Cliente
   }
@@ -24,6 +25,12 @@ export class RegisterClientUseCase {
     nome,
   }: RegisterClientUseCaseRequest): Promise<RegisterClientUseCaseResponse> {
     const newCliente = Cliente.create({ nome, email })
+
+    const userAlreadyExists = await this.clienteRepository.findByEmail(email)
+
+    if (userAlreadyExists) {
+      return left(new UserAlreadyExistsError())
+    }
 
     const cliente = await this.clienteRepository.register(newCliente)
 
