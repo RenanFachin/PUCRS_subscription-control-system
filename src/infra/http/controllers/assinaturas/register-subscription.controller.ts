@@ -81,12 +81,4 @@ export class RegisterSubscriptionController {
       console.error('Assinatura não encontrada:', event.codAssinatura)
     }
   }
-
-  // @OnEvent('pagamentoServicoCadastramento')
-  // handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
-  //   console.log(
-  //     'Evento de pagamento do serviço de cadastramento foi emitido:',
-  //     event,
-  //   )
-  // }
 }

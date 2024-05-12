@@ -5,13 +5,16 @@ import { listAllAppsDTO } from '../../dtos/list-all-apps-dto'
 import { ListAllAppsUseCase } from '@/domain/application/use-cases/list-all-apps'
 import { AppPresenter } from '../../presenters/app-presenter'
 
-const appsResponse = z.array(
-  z.object({
-    codigo: z.string().uuid(),
-    nome: z.string(),
-    custoMensal: z.number(),
-  }),
-)
+const appResponse = z.object({
+  codigo: z.string().uuid(),
+  nome: z.string(),
+  custoMensal: z.number(),
+  createdAt: z.date(),
+})
+
+const appsResponse = z.object({
+  aplicativos: z.array(appResponse),
+})
 
 type AppsResponse = z.infer<typeof appsResponse>
 
@@ -38,6 +41,6 @@ export class ListAllAppsController {
 
     const aplicativos = result.value.aplicativos
 
-    return aplicativos.map(AppPresenter.toHTTP)
+    return { aplicativos: aplicativos.map(AppPresenter.toHTTP) }
   }
 }
