@@ -41,5 +41,7 @@ model Assinatura {
   codApp String
   codCli String
 
+  status String?
+
   @@map("assinaturas")
 }

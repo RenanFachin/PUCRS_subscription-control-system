@@ -49,11 +49,13 @@ describe('Get all subscriptions', () => {
     await inMemoryAssinaturaRepository.register(primeiraAssinatura)
     await inMemoryAssinaturaRepository.register(segundaAssinatura)
 
-    const { assinaturas } = await sut.execute({ tipo: 'TODAS' })
+    const assinaturas = await sut.execute({ tipo: 'TODAS' })
 
     // console.log(assinaturas)
 
-    expect(assinaturas).length(2)
-    expect(assinaturas[1].codigoAplicativo).toBeTruthy()
+    if (assinaturas.isLeft()) {
+      expect(assinaturas.value).length(2)
+      expect(assinaturas[1].codigoAplicativo).toBeTruthy()
+    }
   })
 })

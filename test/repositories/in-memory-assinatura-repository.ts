@@ -40,7 +40,7 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
     return assinaturas
   }
 
-  findByClientIdAndAppId(
+  async findByClientIdAndAppId(
     clientId: string,
     appId: string,
   ): Promise<Assinatura | null> {

@@ -1,3 +1,4 @@
+import { AssinaturaDetails } from '@/domain/application/use-cases/get-client-subscription'
 import { Assinatura } from '@/domain/enterprise/entities/assinaturas'
 
 export class AssinaturaPresenter {
@@ -22,6 +23,20 @@ export class CreateAssinaturaPresenter {
       codCli: assinatura.codCli.toString(),
       inicioVigencia: assinatura.inicioVigencia,
       fimVigencia: assinatura.fimVigencia,
+    }
+  }
+}
+
+export class AssinaturaWithStatusPresenter {
+  static toHTTP(assinatura: AssinaturaDetails) {
+    return {
+      codigo: assinatura.codigoAssinatura,
+      codApp: assinatura.codigoAplicativo,
+      codCli: assinatura.codigoCliente,
+      inicioVigencia: assinatura.dataInicio,
+      fimVigencia: assinatura.dataEncerramento,
+      status: assinatura.status,
+      // subscriptionDetails: assinatura.getSubscriptionDetails,
     }
   }
 }

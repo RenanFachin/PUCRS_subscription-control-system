@@ -20,15 +20,51 @@ export class PrismaAssinaturaRepository implements AssinaturaRepository {
     return PrismaAssinaturaMapper.toDomain(registeredSubscription)
   }
 
-  findAll(): Promise<AssinaturaDetails[] | null> {
+  async findAll(
+    tipo?: 'TODAS' | 'ATIVAS' | 'CANCELADAS',
+  ): Promise<AssinaturaDetails[] | null> {
+    let assinaturas
+
+    if (tipo === 'ATIVAS') {
+      assinaturas = await this.prisma.assinatura.findMany({
+        where: {
+          status: 'ativa',
+        },
+      })
+    } else if (tipo === 'CANCELADAS') {
+      assinaturas = await this.prisma.assinatura.findMany({
+        where: {
+          status: 'cancelada',
+        },
+      })
+    } else {
+      assinaturas = await this.prisma.assinatura.findMany()
+    }
+
+    if (!assinaturas || assinaturas.length === 0) {
+      return null
+    }
+
+    // Mapear as assinaturas para AssinaturaDetails
+    const assinaturasDetails: AssinaturaDetails[] = assinaturas.map(
+      (assinatura) => ({
+        codigoAssinatura: assinatura.codigo,
+        codigoCliente: assinatura.codCli,
+        codigoAplicativo: assinatura.codApp,
+        dataInicio: assinatura.inicioVigencia,
+        dataEncerramento: assinatura.fimVigencia,
+        status: assinatura.status || '',
+      }),
+    )
+
+    return assinaturasDetails
+  }
+
+  async listByClient(id: string): Promise<AssinaturaDetails[]> {
     throw new Error('Method not implemented.')
   }
 
-  listByClient(id: string): Promise<AssinaturaDetails[]> {
-    throw new Error('Method not implemented.')
-  }
-
-  listByApp(id: string): Promise<AssinaturaDetails[]> {
+  async listByApp(id: string): Promise<AssinaturaDetails[]> {
     throw new Error('Method not implemented.')
   }
 

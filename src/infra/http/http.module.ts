@@ -21,6 +21,7 @@ import { GetApplicationDetailByIdCase } from '@/domain/application/use-cases/get
 import { ListAllAppsUseCase } from '@/domain/application/use-cases/list-all-apps'
 import { EditAppMonthlyCostUseCase } from '@/domain/application/use-cases/edit-app-monthly-cost'
 import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/register-subscription'
+import { ListAllSubscriptionUseCase } from '@/domain/application/use-cases/list-all-subscription'
 
 @Module({
   imports: [DatabaseModule],
@@ -48,6 +49,7 @@ import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/regi
     ListAllAppsUseCase,
     EditAppMonthlyCostUseCase,
     RegisterSubscriptionUseCase,
+    ListAllSubscriptionUseCase,
   ],
 })
 export class HttpModule {}

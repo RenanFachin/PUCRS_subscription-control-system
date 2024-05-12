@@ -10,6 +10,11 @@ export interface AssinaturaProps {
   fimVigencia: Date
   codApp: string
   codCli: string
+  status?: string
+}
+
+export type AssinaturaDetailsWithStatus = AssinaturaDetails & {
+  status: 'ATIVA' | 'CANCELADA'
 }
 
 export class Assinatura extends Entity<AssinaturaProps> {
@@ -33,35 +38,45 @@ export class Assinatura extends Entity<AssinaturaProps> {
     return dayjs().isAfter(this.fimVigencia, 'day')
   }
 
-  getSubscriptionDetails(): AssinaturaDetails {
-    return {
+  getSubscriptionDetails(): AssinaturaDetailsWithStatus {
+    const baseDetails: AssinaturaDetails = {
       codigoAssinatura: this.codigo.toValue(),
       codigoCliente: this.props.codCli,
       codigoAplicativo: this.props.codApp,
       dataInicio: this.props.inicioVigencia,
       dataEncerramento: this.props.fimVigencia,
-      status: this.getStatus('TODAS') === 'ativa' ? 'ATIVA' : 'CANCELADA',
+      status: '', // Adicionando a propriedade status com um valor vazio temporário
     }
+
+    // Obtendo o status real
+    const status: 'ATIVA' | 'CANCELADA' =
+      this.getStatus('TODAS') === 'ativa' ? 'ATIVA' : 'CANCELADA'
+
+    // Atualizando o valor de status em baseDetails
+    baseDetails.status = status
+
+    // Retornando os detalhes da assinatura com status
+    return baseDetails as AssinaturaDetailsWithStatus
   }
 
   getStatus(tipo: 'TODAS' | 'ATIVAS' | 'CANCELADAS'): 'ativa' | 'cancelada' {
+    const dataAtual = new Date()
+    const fimVigencia = new Date(this.props.fimVigencia)
+
     if (tipo === 'TODAS') {
-      // Retorna o status baseado na vigência da assinatura
-      if (dayjs().isAfter(this.props.fimVigencia)) {
+      if (dataAtual > fimVigencia) {
         return 'cancelada'
       } else {
         return 'ativa'
       }
     } else if (tipo === 'ATIVAS') {
-      // Retorna 'ativa' se a assinatura estiver dentro do período de vigência
-      if (dayjs().isBefore(this.props.fimVigencia)) {
+      if (dataAtual < fimVigencia) {
         return 'ativa'
       } else {
         return 'cancelada'
       }
     } else if (tipo === 'CANCELADAS') {
-      // Retorna 'cancelada' se a assinatura estiver fora do período de vigência
-      if (dayjs().isAfter(this.props.fimVigencia)) {
+      if (dataAtual > fimVigencia) {
         return 'cancelada'
       } else {
         return 'ativa'

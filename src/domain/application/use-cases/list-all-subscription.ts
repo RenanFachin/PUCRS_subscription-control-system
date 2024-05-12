@@ -1,14 +1,20 @@
+import { Injectable } from '@nestjs/common'
 import { AssinaturaRepository } from '../repositories/assinatura-repository'
 import { AssinaturaDetails } from './get-client-subscription'
+import { Either, right } from '@/core/either'
 
 interface ListAllSubscriptionUseCaseRequest {
   tipo: 'TODAS' | 'ATIVAS' | 'CANCELADAS'
 }
 
-interface ListAllSubscriptionUseCaseResponse {
-  assinaturas: AssinaturaDetails[]
-}
+type ListAllSubscriptionUseCaseResponse = Either<
+  null,
+  {
+    assinaturas: AssinaturaDetails[]
+  }
+>
 
+@Injectable()
 export class ListAllSubscriptionUseCase {
   constructor(private assinaturaRepository: AssinaturaRepository) {}
 
@@ -41,6 +47,6 @@ export class ListAllSubscriptionUseCase {
       }),
     )
 
-    return { assinaturas: assinaturasComStatus }
+    return right({ assinaturas: assinaturasComStatus })
   }
 }

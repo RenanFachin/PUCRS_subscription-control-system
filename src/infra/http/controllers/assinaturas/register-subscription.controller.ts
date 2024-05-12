@@ -6,6 +6,7 @@ import { RegisterSubscriptionDTO } from '../../dtos/register-subscription-dto'
 import { PaymentServiceEvent } from '../../payments/events/payment-service.event'
 import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/register-subscription'
 import { CreateAssinaturaPresenter } from '../../presenters/subscription-presenter'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),
@@ -22,6 +23,7 @@ export class RegisterSubscriptionController {
   constructor(
     private registerSubscrition: RegisterSubscriptionUseCase,
     private eventEmitter: EventEmitter2,
+    private prisma: PrismaService,
   ) {}
 
   @ApiBody({
@@ -57,10 +59,34 @@ export class RegisterSubscriptionController {
   }
 
   @OnEvent('pagamentoServicoCadastramento')
-  handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
-    console.log(
-      'Evento de pagamento do serviço de cadastramento foi emitido:',
-      event,
-    )
+  async handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
+    // Obtenha a assinatura pelo código
+    const assinatura = await this.prisma.assinatura.findUnique({
+      where: {
+        codigo: event.codAssinatura,
+      },
+    })
+
+    if (assinatura) {
+      // Atualize o status da assinatura diretamente
+      await this.prisma.assinatura.update({
+        where: {
+          codigo: event.codAssinatura,
+        },
+        data: {
+          status: 'ativa',
+        },
+      })
+    } else {
+      console.error('Assinatura não encontrada:', event.codAssinatura)
+    }
   }
+
+  // @OnEvent('pagamentoServicoCadastramento')
+  // handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
+  //   console.log(
+  //     'Evento de pagamento do serviço de cadastramento foi emitido:',
+  //     event,
+  //   )
+  // }
 }
