@@ -17,7 +17,7 @@ export class GetClientSubscriptionController {
   })
   @ApiResponse({
     status: 200,
-    description: 'List of client subscription details',
+    description: 'Sucesso',
     type: [SubscriptionDto],
   })
   @ApiResponse({ status: 400, description: 'Cliente não cadatrado.' })

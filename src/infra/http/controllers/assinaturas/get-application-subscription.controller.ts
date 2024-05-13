@@ -17,7 +17,7 @@ export class GetApplicationSubscriptionController {
   })
   @ApiResponse({
     status: 200,
-    description: 'List of client subscription details',
+    description: 'Sucesso',
     type: [ApplicationSubscriptionDTO],
   })
   @ApiResponse({ status: 400, description: 'Aplicativo não cadatrado.' })

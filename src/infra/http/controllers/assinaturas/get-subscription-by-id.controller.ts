@@ -10,14 +10,15 @@ export class GetSubscriptionByIdController {
 
   @Get()
   @ApiOperation({
-    summary: 'Retorna a lista das assinaturas do cliente informado',
+    summary:
+      'Retorna, a partir de o código de uma assinatura, se a assinatura é ativa ou cancelada.',
   })
   @ApiResponse({
     status: 200,
-    description: 'List of client subscription details',
+    description: 'Active or canceled return',
     type: [isSubscriptionValidDto],
   })
-  @ApiResponse({ status: 400, description: 'Cliente não cadatrado.' })
+  @ApiResponse({ status: 400, description: 'Assinatura não encontrada' })
   async handle(@Param('id') id: string) {
     console.log('codigoAssinatura:', id)
 
