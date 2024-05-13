@@ -54,4 +54,16 @@ export class InMemoryAssinaturaRepository implements AssinaturaRepository {
       resolve(assinaturaEncontrada || null)
     })
   }
+
+  async findById(id: string): Promise<string | null> {
+    const assinatura = this.assinaturas.find(
+      (assinatura) => assinatura.codigo.toString() === id,
+    )
+
+    if (!assinatura) {
+      return null
+    }
+
+    return assinatura.status || null
+  }
 }

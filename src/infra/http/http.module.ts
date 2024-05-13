@@ -24,6 +24,8 @@ import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/regi
 import { ListAllSubscriptionUseCase } from '@/domain/application/use-cases/list-all-subscription'
 import { GetClientSubscriptionUseCase } from '@/domain/application/use-cases/get-client-subscription'
 import { GetApplicationSubscriptionUseCase } from '@/domain/application/use-cases/get-application-subscription'
+import { GetSubscriptionByIdUseCase } from '@/domain/application/use-cases/get-subscription-by-id'
+import { GetSubscriptionByIdController } from './controllers/assinaturas/get-subscription-by-id.controller'
 
 @Module({
   imports: [DatabaseModule],
@@ -40,6 +42,7 @@ import { GetApplicationSubscriptionUseCase } from '@/domain/application/use-case
     GetClientSubscriptionController,
     GetApplicationSubscriptionController,
     EditClientController,
+    GetSubscriptionByIdController,
   ],
   providers: [
     RegisterClientUseCase,
@@ -54,6 +57,7 @@ import { GetApplicationSubscriptionUseCase } from '@/domain/application/use-case
     ListAllSubscriptionUseCase,
     GetClientSubscriptionUseCase,
     GetApplicationSubscriptionUseCase,
+    GetSubscriptionByIdUseCase,
   ],
 })
 export class HttpModule {}

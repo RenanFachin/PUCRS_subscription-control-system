@@ -24,3 +24,8 @@ export class SubscriptionDto {
   @ApiProperty()
   status: string
 }
+
+export class isSubscriptionValidDto {
+  @ApiProperty()
+  status: string
+}

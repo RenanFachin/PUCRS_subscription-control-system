@@ -34,6 +34,10 @@ export class Assinatura extends Entity<AssinaturaProps> {
     return this.props.codCli
   }
 
+  get status() {
+    return this.props.status
+  }
+
   get isSubscriptionExpired(): boolean {
     return dayjs().isAfter(this.fimVigencia, 'day')
   }

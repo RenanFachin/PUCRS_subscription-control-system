@@ -136,4 +136,21 @@ export class PrismaAssinaturaRepository implements AssinaturaRepository {
 
     return PrismaAssinaturaMapper.toDomain(assinatura)
   }
+
+  async findById(id: string): Promise<string | null> {
+    const assinatura = await this.prisma.assinatura.findUnique({
+      where: {
+        codigo: id,
+      },
+      select: {
+        status: true,
+      },
+    })
+
+    if (!assinatura) {
+      return null
+    }
+
+    return assinatura.status
+  }
 }

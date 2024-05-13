@@ -10,4 +10,6 @@ export abstract class AssinaturaRepository {
     clientId: string,
     appId: string,
   ): Promise<Assinatura | null>
+
+  abstract findById(id: string): Promise<string | null>
 }
