@@ -39,15 +39,15 @@ Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que j
 
 #### ServicoAssinaturasValidas
 
-- [ ] Deve ser possível retornar a validade de uma assinatura específica
+- [x] Deve ser possível retornar a validade de uma assinatura específica
 
 ### Requisitos não-funcionais
 
-- [ ] Deve ser previsto um script para popular o bando de dados;
-- [ ] Deve ser possível adicionar novos microserviços conforme necessário para atender à demanda crescente;
-- [ ] Todos os dados sensíveis, como informações de pagamento, devem ser armazenados de forma segura;
-- [ ] O sistema deve estar disponível para acesso e uso dos usuários 24 horas por dia, 7 dias por semana, com um tempo de inatividade mínimo planejado para manutenção e atualizações;
-- [ ] Deve haver documentação abrangente disponível para orientar os usuários sobre como utilizar o sistema de forma eficaz;
+- [x] Deve ser previsto um script para popular o bando de dados;
+- [x] Deve ser possível adicionar novos microserviços conforme necessário para atender à demanda crescente;
+- [x] Todos os dados sensíveis, como informações de pagamento, devem ser armazenados de forma segura;
+- [x] O sistema deve estar disponível para acesso e uso dos usuários 24 horas por dia, 7 dias por semana, com um tempo de inatividade mínimo planejado para manutenção e atualizações;
+- [x] Deve haver documentação abrangente disponível para orientar os usuários sobre como utilizar o sistema de forma eficaz;
 
 ## Entidades
 
