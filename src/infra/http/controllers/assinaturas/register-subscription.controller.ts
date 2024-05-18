@@ -3,10 +3,11 @@ import { z } from 'zod'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 import { RegisterSubscriptionDTO } from '../../dtos/register-subscription-dto'
-import { PaymentServiceEvent } from '../../payments/events/payment-service.event'
+// import { PaymentServiceEvent } from '../../../events/payments/events/payment-service.event'
 import { RegisterSubscriptionUseCase } from '@/domain/application/use-cases/register-subscription'
 import { CreateAssinaturaPresenter } from '../../presenters/subscription-presenter'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PaymentEvent } from '@/infra/events/payments/events/payment-service.event'
 
 const registerSubscriptionBodySchema = z.object({
   codApp: z.string().uuid(),
@@ -46,20 +47,20 @@ export class RegisterSubscriptionController {
     const { assinatura } = result.value
 
     // evento de pagamento do serviço de cadastramento
-    const pagamentoEvent: PaymentServiceEvent = {
+    const pagamentoEvent: PaymentEvent = {
       dataPagamento: new Date(),
       codAssinatura: String(assinatura.codigo),
       valorPago: 0, // Como é uma assinatura gratuita inicialmente, o valor pago é zero (7 dias)
     }
-    this.eventEmitter.emit('pagamentoServicoCadastramento', pagamentoEvent)
+    this.eventEmitter.emit('payment.received', pagamentoEvent)
 
     return {
       assinatura: CreateAssinaturaPresenter.toHTTP(assinatura),
     }
   }
 
-  @OnEvent('pagamentoServicoCadastramento')
-  async handlePagamentoServicoCadastramento(event: PaymentServiceEvent) {
+  @OnEvent('payment.received')
+  async handlePagamentoServicoCadastramento(event: PaymentEvent) {
     // Obtenha a assinatura pelo código
     const assinatura = await this.prisma.assinatura.findUnique({
       where: {
@@ -68,6 +69,8 @@ export class RegisterSubscriptionController {
     })
 
     if (assinatura) {
+      console.log('Evento de pagamento')
+
       // Atualize o status da assinatura diretamente
       await this.prisma.assinatura.update({
         where: {
