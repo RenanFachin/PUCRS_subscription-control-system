@@ -5,6 +5,30 @@ Considerando mundo de hoje, o problema propõem a criação de uma aplicação q
 Com isto, é necessário um sistema para manter o controle das assinaturas, este sistema deve ser capaz de, periodicamente, verificar se a assinatura continua válida.
 Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que juntamente com o código de identificação do cliente, fazem a liberação do aplicativo.
 
+## Índice
+
+- [Arquitetura](#arquitetura)
+- [Rotas](#rotas)
+- [Requisitos](#requisitos)
+  - [Requisitos funcionais](#requisitos-funcionais)
+    - [ServicoCadastramento](#servicocadastramento)
+    - [ServicoPagamentos](#servicopagamentos)
+    - [ServicoAssinaturasValidas](#servicoassinaturasvalidas)
+  - [Requisitos não-funcionais](#requisitos-não-funcionais)
+- [Entidades](#entidades)
+- [Atributos](#atributos)
+  - [Aplicativo](#aplicativo)
+  - [Cliente](#cliente)
+  - [Assinatura](#assinatura)
+  - [Pagamento](#pagamento)
+  - [Usuário](#usuário)
+- [Diagrama UML (FASE 1)](#diagrama-uml-fase-1)
+- [Executando o projeto](#executando-o-projeto)
+- [Ferramentas Utilizadas para Construção da Aplicação](#ferramentas-utilizadas-para-construção-da-aplicação)
+  - [Tecnologias Principais](#tecnologias-principais)
+  - [Módulos do NestJS](#módulos-do-nestjs)
+
+
 ## Arquitetura
 
 <div align="center" >
@@ -12,12 +36,20 @@ Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que j
 </div>
 <br>
 
+A escolha da arquitetura para o projeto foi a arquitetura de microsserviços em conjunto com o framework NestJS, que é altamente opinativo e que propõe a fácil implementação de princípios de SOLID, Clean Architecture, e DDD na elaboração do projeto back-end.
+
+Uma arquitetura de microsserviços nos permite uma arquitetura modular e escalável, onde podemos desenvolver diversos módulos de forma independente e apenas acoplar em um serviço principal. Pode ser entendida também como uma arquitetura em 4 camadas, porém, unificando as camadas de Infraestrutura e Apresentação.
+
+Este padrão de 4 camadas, basicamente é o DDD, que não nos impõe uma maneira específica de escrever nossas aplicações, mas oferece um conjunto de conceitos e práticas que podem ser traduzidos para código (entidades, casos de uso, etc.).
+
 ## Rotas
 
 <div align="center" >
   <img alt="Rotas" title="Rotas" src=".github/rotas.PNG" width="800">
 </div>
 <br>
+
+Também disponível em http://localhost:3333/docs após a inicialização do projeto.
 
 ## Requisitos
 
@@ -166,10 +198,19 @@ Testes
 npm run test
 ```
 
-### 📘 Ferramentas/Bibliotecas utilizadas
+### 📘 Ferramentas Utilizadas para Construção da Aplicação
 
-- Back-end
-  - `Typescript`
-  - `NestJS`
-  - `Docker`
-  - `Prisma ORM`
+## Tecnologias Principais
+- [NestJS](https://nestjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [PrismaORM](https://www.prisma.io/)
+- [Docker](https://www.docker.com/)
+- [PostgreSQL](https://hub.docker.com/r/bitnami/postgresql)
+- [Zod](https://zod.dev/)
+- [DayJS](https://day.js.org/)
+- [FakerJS](https://fakerjs.dev/)
+
+## Módulos do NestJS
+- [@nestjs/Swagger](https://docs.nestjs.com/openapi/introduction)
+- [@nestjs/event-emitter](https://docs.nestjs.com/techniques/events)
+- [@nestjs/config](https://docs.nestjs.com/techniques/configuration)
