@@ -28,7 +28,6 @@ Ao assinar um aplicativo, o sistema deve automaticamente gerar um código, que j
   - [Tecnologias Principais](#tecnologias-principais)
   - [Módulos do NestJS](#módulos-do-nestjs)
 
-
 ## Arquitetura
 
 <div align="center" >
@@ -48,6 +47,102 @@ Este padrão de 4 camadas, basicamente é o DDD, que não nos impõe uma maneira
   <img alt="Rotas" title="Rotas" src=".github/rotas.PNG" width="800">
 </div>
 <br>
+
+### Cliente
+
+- **POST** `/servcad/clientes`
+
+  - **Descrição**: Cria um cliente.
+  - **Dados necessários**:
+    - **Body**:
+      ```json
+      {
+        "nome": "string",
+        "email": "string"
+      }
+      ```
+
+- **GET** `/servcad/clientes`
+
+  - **Descrição**: Retorna uma lista de todos os clientes cadastrados.
+
+- **GET** `/servcad/client/{id}`
+
+  - **Descrição**: Retorna os dados de um usuário específico.
+  - **Parâmetros**:
+    - `id` (UUID): Identificador único do cliente.
+
+- **PATCH** `/servcad/client/{id}`
+  - **Descrição**: Edita os dados cadastrados por um cliente.
+  - **Parâmetros**:
+    - `id` (UUID): Identificador único do cliente.
+  - **Dados necessários**:
+    - **Body**:
+      ```json
+      {
+        "nome": "string",
+        "email": "string"
+      }
+      ```
+
+### Aplicativos
+
+- **POST** `/servcad/aplicativos`
+
+  - **Descrição**: Cria um aplicativo.
+  - **Dados necessários**:
+    - **Body**:
+      ```json
+      {
+        "nome": "string",
+        "custoMensal": "number"
+      }
+      ```
+
+- **GET** `/servcad/aplicativos`
+
+  - **Descrição**: Retorna uma lista de todos os aplicativos cadastrados.
+
+- **GET** `/servcad/aplicativos/{id}`
+
+  - **Descrição**: Retorna os detalhes de um aplicativo específico.
+  - **Parâmetros**:
+    - `id` (UUID): Identificador único do aplicativo.
+
+- **PATCH** `/servcad/aplicativos/{id}` - Atualiza o custo mensal do aplicativo.
+  - **Parâmetros**:
+    - `id`: UUID do aplicativo
+  - **Body**:
+    ```json
+    {
+      "custoMensal": "number"
+    }
+    ```
+
+### Assinaturas
+
+- **POST** `/servcad/assinaturas` - Cria uma assinatura válida.
+  - **Body**:
+    ```json
+    {
+      "codApp": "UUID",
+      "codCli": "UUID",
+    }
+    ```
+
+- **GET** `/servcad/assinaturas/{tipo}` - Retorna uma lista das assinaturas ativas, canceladas e de todas cadastradas.
+  - **Parâmetros**:
+    - `tipo`: string (ativos, cancelados, todos)
+    
+- **GET** `/servcad/asscli/{codcli}` - Retorna a lista de assinaturas de um cliente.
+  - **Parâmetros**:
+    - `codcli`: UUID do cliente
+- **GET** `/servcad/assapp/{codapp}` - Retorna a lista de assinaturas por aplicativo.
+  - **Parâmetros**:
+    - `codapp`: UUID do aplicativo
+- **GET** `/verifica/{id}` - Retorna, a partir de o código de uma assinatura, se a assinatura é ativa ou cancelada.
+  - **Parâmetros**:
+    - `id`: UUID da assinatura
 
 Também disponível em http://localhost:3333/docs após a inicialização do projeto.
 
@@ -201,6 +296,7 @@ npm run test
 ### 📘 Ferramentas Utilizadas para Construção da Aplicação
 
 ## Tecnologias Principais
+
 - [NestJS](https://nestjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [PrismaORM](https://www.prisma.io/)
@@ -211,6 +307,7 @@ npm run test
 - [FakerJS](https://fakerjs.dev/)
 
 ## Módulos do NestJS
+
 - [@nestjs/Swagger](https://docs.nestjs.com/openapi/introduction)
 - [@nestjs/event-emitter](https://docs.nestjs.com/techniques/events)
 - [@nestjs/config](https://docs.nestjs.com/techniques/configuration)
