@@ -3,6 +3,7 @@ import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { Env } from './env'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -29,6 +30,26 @@ async function bootstrap() {
     swaggerOptions: { defaultModelsExpandDepth: -1 },
   })
 
-  await app.listen(port)
+  await app.listen(port, () =>
+    console.log(`HTTP server running on port ${port}`),
+  )
+
+  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          clientId: `consumer`,
+          brokers: ['localhost:9092'],
+        },
+        consumer: {
+          groupId: 'payment-consumer',
+        },
+      },
+    },
+  )
+
+  kafkaApp.listen()
 }
 bootstrap()

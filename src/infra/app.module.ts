@@ -5,6 +5,7 @@ import { envSchema } from './env'
 import { HttpModule } from './http/http.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { TasksModule } from '@/task/task.module'
+import { CqrsModule } from '@nestjs/cqrs'
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TasksModule } from '@/task/task.module'
     HttpModule,
     ScheduleModule.forRoot(),
     TasksModule,
+    CqrsModule,
   ],
 })
 export class AppModule {}
